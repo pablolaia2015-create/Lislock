@@ -3,11 +3,15 @@
 import { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import { Messages } from "@/lib/getMessages";
+import { pt, enIE } from "react-day-picker/locale";
 
 export default function DateTimeAvailabilityField({
   durationMinutes = 60,
+  m,
 }: {
   durationMinutes?: number;
+  m: Messages["bookingPage"];
 }) {
   const [selected, setSelected] = useState<Date | undefined>();
   const [dateSelected, setDateSelected] = useState(false);
@@ -46,13 +50,14 @@ export default function DateTimeAvailabilityField({
   }, [selected, durationMinutes]);
 
   const isoDate = selected ? selected.toISOString().slice(0, 10) : "";
+  const locale = m.dayPicker.locale == "en" ? enIE : pt;
 
   return (
     <div className="space-y-4">
       {/* Preferred date */}
       <div className="grid gap-2">
         <label className="text-sm font-medium text-slate-700">
-          Preferred date
+          {m.dayPicker.preferedDate}
         </label>
 
         <DayPicker
@@ -65,6 +70,7 @@ export default function DateTimeAvailabilityField({
             available: "bg-green-100 text-green-800",
             blocked: "bg-red-100 text-red-600 line-through",
           }}
+          locale={locale}
         />
 
         <input type="hidden" name="date" value={isoDate} />
@@ -73,7 +79,7 @@ export default function DateTimeAvailabilityField({
       {/* Preferred time */}
       <div className="grid gap-2">
         <label className="text-sm font-medium text-slate-700">
-          Preferred time
+          {m.dayPicker.preferedTime}
         </label>
 
         <select
@@ -84,15 +90,17 @@ export default function DateTimeAvailabilityField({
           disabled={!dateSelected || slots.length === 0}
           className="w-full rounded-md border px-3 py-2 disabled:bg-slate-100"
         >
-          {!dateSelected && <option value="">Select a date first</option>}
+          {!dateSelected && (
+            <option value="">{m.dayPicker.selectedDate}</option>
+          )}
 
           {dateSelected && slots.length === 0 && (
-            <option value="">No availability</option>
+            <option value="">{m.dayPicker.noAvailable}</option>
           )}
 
           {dateSelected && slots.length > 0 && (
             <>
-              <option value="">Select a time</option>
+              <option value="">{m.dayPicker.selectTime}</option>
               {slots.map((t) => (
                 <option key={t} value={t}>
                   {t}

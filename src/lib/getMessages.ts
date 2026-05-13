@@ -6,6 +6,7 @@ import enLayout from "@/messages/en/layout.json";
 import enServicesSlug from "@/messages/en/servicesSlug.json";
 import enFooter from "@/messages/en/footer.json";
 import enContact from "@/messages/en/contact.json";
+import enBookingPage from "@/messages/en/bookingPage.json";
 
 import ptCommon from "@/messages/pt/common.json";
 import ptHome from "@/messages/pt/home.json";
@@ -15,6 +16,7 @@ import ptLayout from "@/messages/pt/layout.json";
 import ptServicesSlug from "@/messages/pt/servicesSlug.json";
 import ptFooter from "@/messages/pt/footer.json";
 import ptContact from "@/messages/pt/contact.json";
+import ptBookingPage from "@/messages/pt/bookingPage.json";
 
 import { SeoJson } from "@/types/seo";
 
@@ -249,6 +251,54 @@ export type Messages = {
       locations: string[];
     };
   };
+
+  bookingPage: {
+    booking: {
+      title: string;
+      selectedLabel: string;
+      noneSelected: string;
+      chooseService: string;
+      changeService: string;
+    };
+    form: {
+      sections: {
+        details: string;
+        description: string;
+        photos: string;
+      };
+      fields: {
+        name: string;
+        phone: string;
+        code: string;
+        address: string;
+        eircode: string;
+      };
+      buttons: {
+        takePhoto: string;
+        choosePhotos: string;
+        submit: string;
+        submitting: string;
+      };
+    };
+    messages: {
+      selectService: string;
+      success: string;
+      errors: {
+        generic: string;
+        missingId: string;
+        invalidFileType: string;
+        fileTooLarge: string;
+      };
+    };
+    dayPicker: {
+      locale: string;
+      preferedDate: string;
+      preferedTime: string;
+      selectedDate: string;
+      noAvailable: string;
+      selectTime: string;
+    };
+  };
 };
 
 export function getMessages(locale: "en" | "pt"): Messages {
@@ -262,6 +312,7 @@ export function getMessages(locale: "en" | "pt"): Messages {
         servicesSlug: ptServicesSlug,
         footer: ptFooter,
         contact: ptContact,
+        bookingPage: ptBookingPage,
       }
     : {
         common: enCommon,
@@ -272,5 +323,6 @@ export function getMessages(locale: "en" | "pt"): Messages {
         servicesSlug: enServicesSlug,
         footer: enFooter,
         contact: enContact,
+        bookingPage: enBookingPage,
       };
 }

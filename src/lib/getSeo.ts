@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 type PageKey = Exclude<
   keyof Messages,
-  "common" | "layout" | "servicesSlug" | "footer" | "contact"
+  "common" | "layout" | "servicesSlug" | "footer" | "contact" | "bookingPage"
 >;
 
 export async function getSeo(page: PageKey): Promise<Metadata> {

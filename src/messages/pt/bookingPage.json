@@ -1,0 +1,47 @@
+{
+  "booking": {
+    "title": "Marcar um Serviço",
+    "selectedLabel": "Selecionado:",
+    "noneSelected": "— nenhum —",
+    "chooseService": "Escolher um serviço",
+    "changeService": "Alterar serviço"
+  },
+  "form": {
+    "sections": {
+      "details": "Os seus dados",
+      "description": "Descreva o problema",
+      "photos": "Adicionar fotos (opcional)"
+    },
+    "fields": {
+      "name": "Nome completo",
+      "phone": "Telefone",
+      "code": "351",
+      "address": "Morada",
+      "eircode": "Código postal"
+    },
+    "buttons": {
+      "takePhoto": "Tirar foto",
+      "choosePhotos": "Escolher fotos",
+      "submit": "Pedir orçamento",
+      "submitting": "A enviar..."
+    }
+  },
+  "messages": {
+    "selectService": "Por favor, escolha primeiro um serviço.",
+    "success": "Pedido enviado! Vamos confirmar em breve.",
+    "errors": {
+      "generic": "Falha ao enviar o pedido.",
+      "missingId": "ID do pedido não foi devolvido.",
+      "invalidFileType": "Apenas imagens JPG, PNG, WEBP, HEIC/HEIF são permitidas.",
+      "fileTooLarge": "Cada imagem deve ter no máximo 5MB."
+    }
+  },
+  "dayPicker": {
+    "locale": "pt",
+    "preferedDate": "Data desejada",
+    "preferedTime": "Hora desejada",
+    "selectedDate": "Selecione primeiro a data",
+    "noAvailable": "Sem horário disponível",
+    "selectTime": "Selecione um horário"
+  }
+}

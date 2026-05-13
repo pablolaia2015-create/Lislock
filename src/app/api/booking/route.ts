@@ -52,10 +52,13 @@ export async function POST(req: Request) {
     const date = String(form.get("date") ?? "");
     const time = String(form.get("time") ?? "");
     const name = String(form.get("name") ?? "");
-    const phoneRaw = String(form.get("phone") ?? "");
+    let phoneRaw = String(form.get("phone") ?? "")
+      .trim()
+      .replace(/[^\d]/g, "");
     const address = String(form.get("address") ?? "");
     const eircode = String(form.get("eircode") ?? "");
     const description = String(form.get("description") ?? "");
+    const countryCode = String(form.get("countryCode")) ?? "";
 
     if (
       !service ||
@@ -74,7 +77,10 @@ export async function POST(req: Request) {
     }
 
     // TEMP: no validation (kept as requested)
-    const phoneE164 = phoneRaw;
+    if (phoneRaw.startsWith("0")) {
+      phoneRaw = phoneRaw.slice(1);
+    }
+    const phoneE164 = `${countryCode}${phoneRaw}`;
 
     // const phoneE164 = toE164Irish(phoneRaw);
     // if (!phoneE164) {

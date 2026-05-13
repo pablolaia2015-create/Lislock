@@ -10,6 +10,8 @@ import DateTimeAvailabilityField from "@/components/booking/DateTimeAvailability
 import { Service } from "@/types/service";
 import { ICON_MAP } from "@/lib/iconMap";
 import { reportConversionAwait } from "@/lib/ads";
+import { Messages } from "@/lib/getMessages";
+import { CountryCodePicker } from "@/components/CountryCode";
 
 /* ------------------------- Google Ads / gtag setup ------------------------- */
 
@@ -28,6 +30,7 @@ declare global {
 type Props = {
   services: Service[];
   domain: string;
+  m: Messages["bookingPage"];
 };
 
 /* --------------------------------- Helpers -------------------------------- */
@@ -80,7 +83,7 @@ function findServiceSlug(input: string | null, services: Service[]): string {
 
 /* --------------------------------- Component -------------------------------- */
 
-export default function BookingClient({ services, domain }: Props) {
+export default function BookingClient({ services, domain, m }: Props) {
   const search = useSearchParams();
   const [service, setService] = useState<string>("");
   const [photos, setPhotos] = useState<LocalPhoto[]>([]);
@@ -178,7 +181,7 @@ export default function BookingClient({ services, domain }: Props) {
 
     try {
       if (!selected) {
-        toast.error("Please choose a service first.");
+        toast.error(`${m.messages.selectService}`);
         return;
       }
 
@@ -197,11 +200,11 @@ export default function BookingClient({ services, domain }: Props) {
       const data: { id?: string; error?: string } = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to submit booking.");
+        throw new Error(data.error || `${m.messages.errors.generic}`);
       }
 
       if (!data.id) {
-        throw new Error("Booking ID not returned.");
+        throw new Error(`${m.messages.errors.missingId}`);
       }
 
       await reportConversionAwait(
@@ -209,7 +212,7 @@ export default function BookingClient({ services, domain }: Props) {
         2000,
       );
 
-      toast.success("Booking request sent! We'll confirm shortly.");
+      toast.success(`${m.messages.success}`);
 
       setConfirmedBooking({
         bookingId: data.id,
@@ -241,11 +244,11 @@ export default function BookingClient({ services, domain }: Props) {
         <>
           <header className="space-y-3">
             <h1 className="text-3xl font-extrabold text-slate-900">
-              Book a Service
+              {m.booking.title}
             </h1>
 
             <div className="flex items-center gap-3">
-              <span className="text-slate-600">Selected:</span>
+              <span className="text-slate-600">{m.booking.selectedLabel}</span>
               {selected ? (
                 <span className="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-3 py-1.5 text-cyan-800 ring-1 ring-cyan-200">
                   {selected &&
@@ -256,7 +259,7 @@ export default function BookingClient({ services, domain }: Props) {
                   <span className="font-medium">{selected.title}</span>
                 </span>
               ) : (
-                <span className="text-slate-400">— none —</span>
+                <span className="text-slate-400">{m.booking.noneSelected}</span>
               )}
             </div>
 
@@ -264,7 +267,11 @@ export default function BookingClient({ services, domain }: Props) {
               value={service}
               onChange={setService}
               services={services}
-              ctaText={selected ? "Change service" : "Choose a service"}
+              ctaText={
+                selected
+                  ? `${m.booking.changeService}`
+                  : `${m.booking.chooseService}`
+              }
             />
           </header>
 
@@ -274,22 +281,24 @@ export default function BookingClient({ services, domain }: Props) {
           >
             {/* Date & Time */}
 
-            <DateTimeAvailabilityField />
+            <DateTimeAvailabilityField m={m} />
 
             {/* Details */}
             <div className="grid gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Your details
+                {m.form.sections.details}
               </label>
               <input
                 name="name"
-                placeholder="Full name"
+                placeholder={m.form.fields.name}
                 required
                 className="rounded-md border border-slate-300 px-3 py-2"
               />
+              <CountryCodePicker m={m} />
+
               <input
                 name="phone"
-                placeholder="Phone"
+                placeholder={m.form.fields.phone}
                 required
                 className="rounded-md border border-slate-300 px-3 py-2"
               />
@@ -297,13 +306,13 @@ export default function BookingClient({ services, domain }: Props) {
               <div className="grid gap-3 sm:grid-cols-[1fr,200px]">
                 <input
                   name="address"
-                  placeholder="Address (Dublin)"
+                  placeholder={m.form.fields.address}
                   required
                   className="rounded-md border border-slate-300 px-3 py-2"
                 />
                 <input
                   name="eircode"
-                  placeholder="Eircode (e.g., D01 F5P2)"
+                  placeholder={m.form.fields.eircode}
                   required
                   className="rounded-md border border-slate-300 px-3 py-2 uppercase"
                 />
@@ -313,7 +322,7 @@ export default function BookingClient({ services, domain }: Props) {
             {/* Description */}
             <div className="grid gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Describe the issue
+                {m.form.sections.description}
               </label>
               <textarea
                 name="description"
@@ -326,7 +335,7 @@ export default function BookingClient({ services, domain }: Props) {
             {/* Photos */}
             <div className="grid gap-2">
               <label className="text-sm font-medium text-slate-700">
-                Add photos (optional)
+                {m.form.sections.photos}
               </label>
 
               <input
@@ -352,14 +361,14 @@ export default function BookingClient({ services, domain }: Props) {
                   onClick={() => cameraInputRef.current?.click()}
                   className="rounded-md bg-cyan-700 px-4 py-2 text-white"
                 >
-                  Take photo
+                  {m.form.buttons.takePhoto}
                 </button>
                 <button
                   type="button"
                   onClick={() => galleryInputRef.current?.click()}
                   className="rounded-md border px-4 py-2"
                 >
-                  Choose photos
+                  {m.form.buttons.choosePhotos}
                 </button>
               </div>
 
@@ -395,7 +404,9 @@ export default function BookingClient({ services, domain }: Props) {
               disabled={isSubmitting}
               className="w-full rounded-lg bg-cyan-700 py-3 text-white font-bold hover:bg-cyan-800"
             >
-              {isSubmitting ? "Sending..." : "Request booking"}
+              {isSubmitting
+                ? `${m.form.buttons.submitting}`
+                : `${m.form.buttons.submit}`}
             </button>
           </form>
         </>
