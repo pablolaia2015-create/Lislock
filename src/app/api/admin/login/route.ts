@@ -8,13 +8,28 @@ export async function POST(req: Request) {
     const username = String(form.get("username") ?? "");
     const password = String(form.get("password") ?? "");
 
+    // --- 🎯 MODIFIED CODE HERE ---
+    const locale = await getLocale();
+
+    const isDev = process.env.NODE_ENV === "development";
+    let siteUrl;
+
+    const port = process.env.PORT || 3000;
+    if (locale === "pt") {
+      siteUrl = isDev ? `http://lislock.local:${port}` : "https://lislock.pt";
+    } else {
+      siteUrl = isDev
+        ? `http://dublinerhandyman.local:${port}`
+        : "https://dublinerhandyman.ie";
+    }
+
     // [Authentication logic remains the same]
     if (
       username !== process.env.ADMIN_USER ||
       password !== process.env.ADMIN_PASS
     ) {
-      const url = new URL("/admin/login", req.url);
-      url.searchParams.set("error", "1");
+      const url = new URL("/admin/login", siteUrl);
+      url.searchParams.set("error", "Invalid Credentials");
       return NextResponse.redirect(url);
     }
     // [JWT signing logic remains the same]
@@ -23,23 +38,6 @@ export async function POST(req: Request) {
       username,
       role: "admin",
     });
-
-    // --- 🎯 MODIFIED CODE HERE ---
-    const locale = await getLocale();
-
-    const isDev = process.env.NODE_ENV === "development";
-
-    const port = process.env.PORT || 3000;
-
-    let siteUrl;
-
-    if (locale === "pt") {
-      siteUrl = isDev ? `http://lislock.local:${port}` : "https://lislock.pt";
-    } else {
-      siteUrl = isDev
-        ? `http://dublinerhandyman.local:${port}`
-        : "https://dublinerhandyman.ie";
-    }
 
     // Use the determined base URL to construct the redirect URL
     const redirectUrl = new URL("/admin/bookings", await siteUrl);

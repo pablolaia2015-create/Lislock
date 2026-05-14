@@ -173,7 +173,7 @@ export default function ReviewForm({
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
             className="rounded-md border border-slate-300 px-3 py-2"
-            placeholder="e.g., Aoife"
+            placeholder="e.g., Jhon"
           />
         </div>
 
