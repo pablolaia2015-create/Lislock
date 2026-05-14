@@ -12,6 +12,7 @@ import {
   Save,
 } from "lucide-react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 /* ---------- TYPES ---------- */
 type Inventory = { size: string; qty: number; _id: string };
@@ -51,6 +52,7 @@ export default function HardwareList({ bookingId, initialSupplies }: Props) {
   );
   const [qtyMap, setQtyMap] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -172,6 +174,8 @@ export default function HardwareList({ bookingId, initialSupplies }: Props) {
         toast.error("Something went wrong");
       }
     } finally {
+    router.refresh();
+
       setLoading(false);
     }
   }

@@ -3,6 +3,7 @@
 import ActionButtons from "@/components/Buttons/ActionButtons";
 import { updateBookingAction } from "@/lib/actions/updateBooking";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type TypeDescription = {
   description?: string;
@@ -13,6 +14,8 @@ const ServiceDescription = ({ description, bookingId }: TypeDescription) => {
   const [value, setValue] = useState(description ?? "");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
 
   const handleSubmit = async () => {
     await updateBookingAction({
@@ -22,6 +25,7 @@ const ServiceDescription = ({ description, bookingId }: TypeDescription) => {
       },
       setLoading,
     });
+    router.refresh();
 
     setEditing(false);
   };
