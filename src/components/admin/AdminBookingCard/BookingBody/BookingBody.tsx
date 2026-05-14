@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { AdminBooking } from "../types";
 import BookingDonePanel from "../BookingDonePanel";
-import BookingActions from "../BookingActions";
 import BookingDetailsEditor from "../BookingDetailsEditor";
 import HardwareList from "./HardwareList";
 import ServiceDescription from "./ServiceDescription";
@@ -63,11 +62,6 @@ export default function BookingBody({ booking }: { booking: AdminBooking }) {
           onClose={() => setEditing(false)}
         />
       )}
-
-      <BookingActions
-        bookingId={booking._id}
-        onToggleEditing={() => setEditing((v) => !v)}
-      />
     </div>
   );
 }

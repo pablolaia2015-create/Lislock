@@ -80,7 +80,7 @@ export async function POST(req: Request) {
     if (phoneRaw.startsWith("0")) {
       phoneRaw = phoneRaw.slice(1);
     }
-    const phoneE164 = `${countryCode}${phoneRaw}`;
+    const phoneE164 = `+${countryCode}${phoneRaw}`;
 
     // const phoneE164 = toE164Irish(phoneRaw);
     // if (!phoneE164) {
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     let distanceDuration: number | null = null;
 
     try {
-      const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+      const baseUrl = process.env.SITE_URL || "http://localhost:3000";
 
       const distanceRes = await fetch(`${baseUrl}/api/distance`, {
         method: "POST",

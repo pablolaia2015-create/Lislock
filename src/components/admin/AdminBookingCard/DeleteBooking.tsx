@@ -3,7 +3,7 @@
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function BookingActions({
+export default function DeleteBooking({
   bookingId,
 }: {
   bookingId: string;
@@ -36,11 +36,11 @@ export default function BookingActions({
   }
 
   return (
-    <div className="flex justify-center mt-5 gap-4">
+    <div className="flex justify-center">
       <form onSubmit={handleDelete}>
         <button
           type="submit"
-          className="rounded-4xl border border-red-300 px-1 py-1 text-red-500 hover:bg-red-50"
+          className=" px-1 py-1 text-red-500 hover:bg-red-50"
           title="Delete booking"
         >
           <Trash />
