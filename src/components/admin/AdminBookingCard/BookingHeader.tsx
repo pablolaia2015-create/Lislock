@@ -77,6 +77,7 @@ export default function BookingHeader({
               <div>
                 <Link
                   href={`http://maps.google.co.uk/maps?q=${booking.eircode}`}
+                  target="_blank"
                   className="font-semibold"
                 >
                   Address: {booking.address} · {booking.eircode}
