@@ -1,146 +1,176 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
-import { BudgeterContext } from "@/context/budgeter";
-import Image from "next/image";
-import { Package } from "lucide-react";
 
-export type InventoryItem = {
-  _id: string;
-  size: string;
-  qty: number;
-};
+import { useState } from "react";
 
-export type StoreEntry = {
-  storeName: string;
-  link: string;
-  price: number;
-  inventory: InventoryItem[];
-};
-
-export type Supply = {
-  _id: string;
+type ScrapedItem = {
   name: string;
-  description: string;
-  category: string;
-  serviceSlug: string;
-  color?: string;
-  photos: string[];
-  storeEntries: StoreEntry[];
-  createdAt: string;
-  updatedAt?: string;
+  model: string;
+  price: number;
+  assemblyPrice: number;
+  callOutFee: number;
+  assemblyAvailable: boolean;
 };
 
 export default function Items() {
-  const [, dispatch] = useContext(BudgeterContext);
-  const [items, setItems] = useState<Supply[]>([]);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [links, setLinks] = useState<string[]>([""]);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<ScrapedItem[] | null>(null);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(
-        "/api/admin/supplies?category=internal-doors&limit=20",
-      );
-      const data: Supply[] = await res.json();
+  const handleAddLink = () => {
+    setLinks((prev) => [...prev, ""]);
+  };
 
-      const sorted = data.sort(
-        (a, b) => a.storeEntries[0].price - b.storeEntries[0].price,
-      );
-      setItems(sorted);
+  const handleRemoveLink = (index: number) => {
+    setLinks((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleChangeLink = (index: number, value: string) => {
+    setLinks((prev) => prev.map((link, i) => (i === index ? value : link)));
+  };
+
+  const handleSendLinks = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      setResult(null);
+
+      const filteredLinks = links.filter((link) => link.trim() !== "");
+      console.log(filteredLinks);
+
+      if (filteredLinks.length === 0) {
+        setError("Please insert at least one link");
+        return;
+      }
+
+      const response = await fetch("http://34.89.51.30:3000/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          urls: filteredLinks,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to scrape");
+      }
+
+      const data: ScrapedItem[] = await response.json();
+
+      setResult(data);
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong while scraping");
+    } finally {
+      setLoading(false);
     }
-
-    fetchData();
-  }, []);
-
-  const handleSelect = (item: Supply) => {
-    setSelectedId(item._id);
-
-    dispatch({
-      type: "SELECT_SUPPLY",
-      payload: {
-        _id: item._id,
-        name: item.name,
-        price: item.storeEntries[0].price,
-        photo: item.photos?.[0],
-      },
-    });
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-3 py-6">
+    <div className="min-h-screen flex flex-col px-3 py-6 gap-6">
       {/* Title */}
-      <div className="text-center mb-6">
-        <p className="text-xl font-semibold text-slate-900">Choose your door</p>
-        <p className="text-sm text-slate-500">Select one option to continue</p>
+      <div className="text-center">
+        <p className="text-2xl font-semibold text-slate-900">
+          Insert your links
+        </p>
+
+        <p className="text-sm text-slate-500">
+          Add one or more IKEA product links
+        </p>
       </div>
 
-      {/* Items */}
-      <div className="grid gap-4">
-        {items.map((item) => {
-          const isSelected = selectedId === item._id;
+      {/* Inputs */}
+      <div className="flex flex-col gap-3">
+        {links.map((link, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              type="text"
+              placeholder="https://www.ikea.com/..."
+              value={link}
+              onChange={(e) => handleChangeLink(index, e.target.value)}
+              className="flex-1 border border-slate-300 rounded-lg px-4 py-2 outline-none focus:border-black"
+            />
 
-          return (
-            <button
-              key={item._id}
-              onClick={() => handleSelect(item)}
-              className={`flex items-center gap-4 w-full p-4 rounded-xl border transition text-left
-                ${
-                  isSelected
-                    ? "border-cyan-600 bg-cyan-50"
-                    : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
-                }`}
+            {links.length > 1 && (
+              <button
+                onClick={() => handleRemoveLink(index)}
+                className="px-4 rounded-lg border border-red-300 text-red-500"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-3">
+        <button
+          onClick={handleAddLink}
+          className="border border-slate-300 rounded-lg py-2 px-4 hover:bg-slate-100"
+        >
+          Add link
+        </button>
+
+        <button
+          onClick={handleSendLinks}
+          disabled={loading}
+          className="bg-black text-white rounded-lg py-2 px-4 disabled:opacity-50"
+        >
+          {loading ? "Scraping..." : "Send links"}
+        </button>
+      </div>
+
+      {/* Error */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-500 rounded-lg p-3">
+          {error}
+        </div>
+      )}
+
+      {/* Results */}
+      {result && (
+        <div className="flex flex-col gap-4">
+          {result.map((item) => (
+            <div
+              key={item.model}
+              className="border border-slate-200 rounded-xl p-5 shadow-sm"
             >
-              {/* Image */}
-              <div className="w-20 h-20 relative bg-slate-50 rounded-lg border overflow-hidden flex items-center justify-center">
-                {item.photos?.[0] ? (
-                  <Image
-                    src={item.photos[0]}
-                    alt={item.name}
-                    fill
-                    className="object-contain p-2"
-                  />
-                ) : (
-                  <Package className="text-slate-300" />
-                )}
+              <div className="flex flex-col gap-2">
+                <h2 className="text-lg font-semibold">{item.name}</h2>
+
+                <p className="text-sm text-slate-500">Model: {item.model}</p>
+
+                <div className="mt-2 flex flex-col gap-1 text-sm">
+                  <p>
+                    Product price:{" "}
+                    <span className="font-medium">€{item.price}</span>
+                  </p>
+
+                  <p>
+                    Assembly price:{" "}
+                    <span className="font-medium">€{item.assemblyPrice}</span>
+                  </p>
+
+                  <p>
+                    Call out fee:{" "}
+                    <span className="font-medium">€{item.callOutFee}</span>
+                  </p>
+
+                  <p>
+                    Assembly available:{" "}
+                    <span className="font-medium">
+                      {item.assemblyAvailable ? "Yes" : "No"}
+                    </span>
+                  </p>
+                </div>
               </div>
-
-              {/* Info */}
-              <div className="flex-1">
-                <p className="font-semibold text-slate-800">{item.name}</p>
-                <p className="text-sm text-slate-500 mt-1">
-                  €{item.storeEntries[0].price.toFixed(2)}
-                </p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Bottom Buttons */}
-      <div className="flex justify-between mt-6">
-        <button
-          className="bg-slate-200 text-slate-700 py-2 px-4 rounded-xl"
-          onClick={() => dispatch({ type: "PREVIOUS" })}
-        >
-          Back
-        </button>
-
-        <button
-          disabled={!selectedId}
-          className={`py-2 px-4 rounded-xl font-medium transition ${
-            selectedId
-              ? "bg-cyan-600 text-white"
-              : "bg-slate-200 text-slate-400 cursor-not-allowed"
-          }`}
-          // onClick={() =>
-          //   dispatch({
-          //     type: "SELECT_SUPPLY",
-          //     payload: items.find((i) => i._id === selectedId),
-          //   })
-          // }
-        >
-          Next
-        </button>
-      </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

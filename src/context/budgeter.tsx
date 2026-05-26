@@ -17,14 +17,14 @@ interface BudgetState {
 
 type Action =
   | { type: "TYPE_OF_SERVICES" }
-  | { type: "SUP_FIT" }
+  | { type: "LINK_INP" }
   | { type: "CLOSE_TAB" }
   | { type: "PREVIOUS" }
   | {
       type: "SELECT_SUPPLY";
       payload: SelectedSupply;
-    }|
-    {type: "NEXT_STAGE"}
+    }
+  | { type: "NEXT_STAGE" };
 
 const STAGES: Stage[] = [
   "Start",
@@ -46,7 +46,7 @@ const budgeterReducer = (state: BudgetState, action: Action) => {
         quoteStage: STAGES[1],
       };
 
-    case "SUP_FIT":
+    case "LINK_INP":
       return {
         ...state,
         quoteStage: STAGES[2],

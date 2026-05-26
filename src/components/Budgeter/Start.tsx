@@ -5,9 +5,9 @@ export default function Start() {
   const [, dispatch] = useContext(BudgeterContext);
 
   return (
-    <div className="w-full max-w-md space-y-2">
-      <span className="text-xl font-semibold text-slate-900">
-        Click on button to start your quote
+    <div className="w-full max-w-md flex flex-col gap-4">
+      <span className="text-xl text-center font-semibold text-slate-900 p-4">
+        Send the item link to get a quick quote
       </span>
       <button
         className="flex items-center justify-center gap-3 w-full py-4 px-3 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition"
