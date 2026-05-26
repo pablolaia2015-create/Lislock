@@ -43,7 +43,7 @@ export default function Items() {
         return;
       }
 
-      const response = await fetch("http://34.89.51.30:3000/scrape", {
+      const response = await fetch("/api/admin/scrape", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
