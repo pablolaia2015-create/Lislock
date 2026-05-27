@@ -1,20 +1,84 @@
-import { BudgeterContext } from "@/context/budgeter";
-import { ArrowBigLeft, X } from "lucide-react";
+"use client";
+
 import { useContext } from "react";
 
+import { BudgeterContext, STAGES } from "@/context/budgeter";
+
+import { ArrowBigLeft, ShoppingBasket, X } from "lucide-react";
+
 export default function CommandButtons() {
-  const [, dispatch] = useContext(BudgeterContext);
+  const [state, dispatch] = useContext(BudgeterContext);
+
+  const handlePrevious = () => {
+    switch (state.quoteStage) {
+      case STAGES.BRANDS:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.START,
+        });
+        break;
+
+      case STAGES.SUPPLIED_FITTED:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.BRANDS,
+        });
+        break;
+
+      case STAGES.BASKET:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.SUPPLIED_FITTED,
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const handleBasket = () => {
+    dispatch({
+      type: "GO_TO_BASKET",
+    });
+  };
+
+  const handleClose = () => {
+    dispatch({
+      type: "CLOSE_TAB",
+    });
+  };
 
   return (
-    <div className="p-4 flex justify-between">
-      <button onClick={() => dispatch({ type: "PREVIOUS" })}>
-        <ArrowBigLeft />
-      </button>
+    <div className="p-4 flex items-center justify-between border-b border-slate-200">
+      {/* Previous */}
       <button
-        className="flex items-center justify-center w-8 h-8 rounded-full bg-red-400 hover:bg-red-500 transition"
-        onClick={() => dispatch({ type: "CLOSE_TAB" })}
+        onClick={handlePrevious}
+        className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-slate-100 transition"
       >
-        <X />
+        <ArrowBigLeft size={22} />
+      </button>
+
+      {/* Basket */}
+      <button
+        onClick={handleBasket}
+        className="relative flex items-center justify-center w-10 h-10 rounded-xl hover:bg-slate-100 transition"
+      >
+        <ShoppingBasket size={22} />
+
+        {state.basket.length > 0 && (
+          <span className="absolute -top-1 -right-1 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {state.basket.length}
+          </span>
+        )}
+      </button>
+
+      {/* Close */}
+      <button
+        onClick={handleClose}
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-red-400 hover:bg-red-500 text-white transition"
+      >
+        <X size={18} />
       </button>
     </div>
   );

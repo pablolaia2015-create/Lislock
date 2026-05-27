@@ -1,19 +1,37 @@
+"use client";
+
 import { useContext } from "react";
-import { BudgeterContext } from "@/context/budgeter";
+
+import { BudgeterContext, STAGES } from "@/context/budgeter";
 
 export default function Start() {
   const [, dispatch] = useContext(BudgeterContext);
 
+  const handleStart = () => {
+    dispatch({
+      type: "SET_STAGE",
+      payload: STAGES.BRANDS,
+    });
+  };
+
   return (
-    <div className="w-full max-w-md flex flex-col gap-4">
-      <span className="text-xl text-center font-semibold text-slate-900 p-4">
-        Send the item link to get a quick quote
-      </span>
+    <div className="w-full max-w-md flex flex-col gap-5">
+      <div className="flex flex-col gap-2 text-center">
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Get your assembly quote
+        </h1>
+
+        <p className="text-sm text-slate-500 leading-relaxed">
+          Send your product links and receive a quick installation quote in just
+          a few steps.
+        </p>
+      </div>
+
       <button
-        className="flex items-center justify-center gap-3 w-full py-4 px-3 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition"
-        onClick={() => dispatch({ type: "TYPE_OF_SERVICES" })}
+        onClick={handleStart}
+        className="flex items-center justify-center gap-3 w-full py-4 px-4 rounded-xl bg-black text-white hover:opacity-90 transition"
       >
-        <span className="font-medium text-slate-800">Start </span>
+        Start quote
       </button>
     </div>
   );

@@ -1,71 +1,145 @@
 "use client";
+
 import { createContext, Dispatch, ReactNode, useReducer } from "react";
 
-type Stage = string;
+export type Stage = "Start" | "Brands" | "SuppliedFitted" | "Basket";
 
-type SelectedSupply = {
-  _id: string;
+export type BrandName = "ikea" | "jysk" | "wayfair";
+
+export type ProductLink = {
+  brand: BrandName;
+  url: string;
+  quantity: number;
+};
+
+export type ScrapedItem = {
+  brand: BrandName;
+
   name: string;
+  model: string;
+
   price: number;
-  photo?: string;
+  assemblyPrice: number;
+  callOutFee: number;
+
+  assemblyAvailable: boolean;
+
+  quantity: number;
 };
 
 interface BudgetState {
   quoteStage: Stage;
-  selectedSupply?: SelectedSupply;
+
+  selectedBrand: BrandName | null;
+
+  isLoading: boolean;
+
+  links: ProductLink[];
+
+  basket: ScrapedItem[];
 }
 
 type Action =
-  | { type: "TYPE_OF_SERVICES" }
-  | { type: "LINK_INP" }
-  | { type: "CLOSE_TAB" }
-  | { type: "PREVIOUS" }
   | {
-      type: "SELECT_SUPPLY";
-      payload: SelectedSupply;
+      type: "SET_STAGE";
+      payload: Stage;
     }
-  | { type: "NEXT_STAGE" };
+  | {
+      type: "SET_BRAND";
+      payload: BrandName;
+    }
+  | {
+      type: "SET_LOADING";
+      payload: boolean;
+    }
+  | {
+      type: "SET_LINKS";
+      payload: ProductLink[];
+    }
+  | {
+      type: "SET_BASKET";
+      payload: ScrapedItem[];
+    }
+  | {
+      type: "GO_TO_BASKET";
+    }
+  | {
+      type: "CLOSE_TAB";
+    };
 
-const STAGES: Stage[] = [
-  "Start",
-  "TypeOfService",
-  "SuppliedFitted",
-  "ProductDetails",
-  "Quote",
-];
+export const STAGES = {
+  START: "Start",
+  BRANDS: "Brands",
+  SUPPLIED_FITTED: "SuppliedFitted",
+  BASKET: "Basket",
+} as const;
 
 const initialState: BudgetState = {
-  quoteStage: STAGES[0],
+  quoteStage: STAGES.START,
+
+  selectedBrand: null,
+
+  isLoading: false,
+
+  links: [],
+
+  basket: [],
 };
 
-const budgeterReducer = (state: BudgetState, action: Action) => {
+const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
   switch (action.type) {
-    case "TYPE_OF_SERVICES":
+    case "SET_STAGE":
       return {
         ...state,
-        quoteStage: STAGES[1],
+        quoteStage: action.payload,
       };
 
-    case "LINK_INP":
+    case "SET_BRAND":
       return {
         ...state,
-        quoteStage: STAGES[2],
+        selectedBrand: action.payload,
+      };
+
+    case "SET_LOADING":
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
+
+    case "SET_LINKS": {
+      const otherBrandsLinks = state.links.filter(
+        (item) => item.brand !== state.selectedBrand,
+      );
+
+      return {
+        ...state,
+        links: [...otherBrandsLinks, ...action.payload],
+      };
+    }
+
+    case "SET_BASKET": {
+      const otherBrandsBasket = state.basket.filter(
+        (item) => item.brand !== state.selectedBrand,
+      );
+
+      return {
+        ...state,
+        basket: [...otherBrandsBasket, ...action.payload],
+      };
+    }
+
+    case "GO_TO_BASKET":
+      return {
+        ...state,
+        quoteStage: STAGES.BASKET,
       };
 
     case "CLOSE_TAB":
       return {
         ...state,
-        quoteStage: STAGES[0],
+        quoteStage: STAGES.START,
       };
 
-    case "PREVIOUS":
-      const currentIndex = STAGES.indexOf(state.quoteStage);
-
-      const prevIndex = currentIndex > 0 ? currentIndex - 1 : 0;
-      return {
-        ...state,
-        quoteStage: STAGES[prevIndex],
-      };
     default:
       return state;
   }
@@ -78,6 +152,7 @@ export const BudgeterContext = createContext<[BudgetState, Dispatch<Action>]>([
 
 export const BudgeterProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(budgeterReducer, initialState);
+
   return (
     <BudgeterContext.Provider value={[state, dispatch]}>
       {children}
