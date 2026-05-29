@@ -31,7 +31,7 @@ export default function Basket() {
     );
   }, [items]);
 
-  const callOutFee = items.length > 0 ? items[0].callOutFee : 0;
+  const callOutFee = 40;
 
   const total =
     items.reduce((acc, item) => {
@@ -84,8 +84,8 @@ export default function Basket() {
   };
 
   return (
-    <div className="flex flex-col gap-8 px-3 py-6">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full min-h-0 flex-col px-3 py-6">
+      <div className="flex gap-3 items-center justify-between mb-3">
         <div>
           <h2 className="text-3xl font-semibold">Your basket</h2>
 
@@ -101,111 +101,115 @@ export default function Basket() {
               payload: STAGES.BRANDS,
             });
           }}
-          className="border border-slate-300 rounded-lg px-4 py-2 hover:bg-slate-100"
+          className="border border-slate-300 rounded-lg p-3 hover:bg-slate-100"
         >
           Add more items
         </button>
       </div>
 
-      <div className="flex flex-col gap-8">
-        {Object.entries(groupedItems).map(([brand, brandItems]) => {
-          if (brandItems.length === 0) {
-            return null;
-          }
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="flex flex-col gap-8">
+          {Object.entries(groupedItems).map(([brand, brandItems]) => {
+            if (brandItems.length === 0) {
+              return null;
+            }
 
-          return (
-            <div key={brand} className="flex flex-col gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-widest text-slate-400">
-                  {brand}
-                </p>
+            return (
+              <div key={brand} className="flex flex-col gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-slate-400">
+                    {brand}
+                  </p>
+                </div>
 
-                <h3 className="text-2xl font-semibold">{brand}</h3>
-              </div>
+                <div className="flex flex-col gap-4">
+                  {brandItems.map((item) => {
+                    const assembly = Math.ceil(item.assemblyPrice);
 
-              <div className="flex flex-col gap-4">
-                {brandItems.map((item) => {
-                  const assembly = Math.ceil(item.assemblyPrice);
+                    const itemTotal = assembly * item.quantity;
 
-                  const itemTotal = assembly * item.quantity;
+                    return (
+                      <div
+                        key={`${item.brand}-${item.model}`}
+                        className="border border-slate-200 rounded-2xl p-5 flex flex-col gap-4"
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex flex-col gap-1">
+                            <h4 className="text-lg font-semibold">
+                              {item.name}
+                            </h4>
 
-                  return (
-                    <div
-                      key={`${item.brand}-${item.model}`}
-                      className="border border-slate-200 rounded-2xl p-5 flex flex-col gap-4"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex flex-col gap-1">
-                          <h4 className="text-lg font-semibold">{item.name}</h4>
+                            <p className="text-sm text-slate-500">
+                              Model: {item.model}
+                            </p>
+                          </div>
 
-                          <p className="text-sm text-slate-500">
-                            Model: {item.model}
-                          </p>
+                          <button
+                            onClick={() => handleRemoveItem(item)}
+                            className="border border-red-200 text-red-500 rounded-lg p-2 hover:bg-red-50"
+                          >
+                            <Trash size={18} />
+                          </button>
                         </div>
 
-                        <button
-                          onClick={() => handleRemoveItem(item)}
-                          className="border border-red-200 text-red-500 rounded-lg p-2 hover:bg-red-50"
-                        >
-                          <Trash size={18} />
-                        </button>
-                      </div>
+                        <div className="flex flex-col gap-2 text-sm">
+                          <div className="flex items-center justify-between">
+                            <p>Assembly</p>
 
-                      <div className="flex flex-col gap-2 text-sm">
-                        <div className="flex items-center justify-between">
-                          <p>Assembly</p>
+                            <p>€{assembly}</p>
+                          </div>
 
-                          <p>€{assembly}</p>
-                        </div>
+                          <div className="flex items-center justify-between">
+                            <p>Quantity</p>
 
-                        <div className="flex items-center justify-between">
-                          <p>Quantity</p>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleQuantity(item, "decrease")}
+                                className="w-8 h-8 border rounded-lg"
+                              >
+                                -
+                              </button>
 
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => handleQuantity(item, "decrease")}
-                              className="w-8 h-8 border rounded-lg"
-                            >
-                              -
-                            </button>
+                              <span className="w-6 text-center">
+                                {item.quantity}
+                              </span>
 
-                            <span className="w-6 text-center">
-                              {item.quantity}
-                            </span>
+                              <button
+                                onClick={() => handleQuantity(item, "increase")}
+                                className="w-8 h-8 border rounded-lg"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
 
-                            <button
-                              onClick={() => handleQuantity(item, "increase")}
-                              className="w-8 h-8 border rounded-lg"
-                            >
-                              +
-                            </button>
+                          <div className="border-t pt-3 mt-2 flex items-center justify-between">
+                            <p className="font-medium">Total</p>
+
+                            <p className="font-semibold text-base">
+                              €{itemTotal.toFixed(2)}
+                            </p>
                           </div>
                         </div>
-
-                        <div className="border-t pt-3 mt-2 flex items-center justify-between">
-                          <p className="font-medium">Total</p>
-
-                          <p className="font-semibold text-base">
-                            €{itemTotal.toFixed(2)}
-                          </p>
-                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      <div className="border-t pt-6 flex flex-col gap-5">
+      <div className="shrink-0 border-t p-2 mt-6 flex flex-col gap-5">
         <div className="flex items-center justify-between text-sm">
           <p className="text-slate-500">Call-out fee</p>
 
-          <p>€{callOutFee.toFixed(2)}</p>
+          <p>€{callOutFee}</p>
         </div>
+        {/*  */}
 
+        {/* FOOTER */}
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-slate-500">Basket total</p>
@@ -213,7 +217,10 @@ export default function Basket() {
             <p className="text-4xl font-bold">€{total.toFixed(2)}</p>
           </div>
 
-          <button className="bg-black text-white rounded-xl px-8 py-4 hover:opacity-90 transition">
+          <button
+            onClick={() => dispatch({ type: "CUSTOMER_DETAILS" })}
+            className="bg-black text-white rounded-xl px-8 py-4 hover:opacity-90 transition"
+          >
             Continue
           </button>
         </div>

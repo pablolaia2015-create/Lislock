@@ -18,7 +18,7 @@ export default function CommandButtons() {
         });
         break;
 
-      case STAGES.SUPPLIED_FITTED:
+      case STAGES.INP_LINKS:
         dispatch({
           type: "SET_STAGE",
           payload: STAGES.BRANDS,
@@ -28,7 +28,21 @@ export default function CommandButtons() {
       case STAGES.BASKET:
         dispatch({
           type: "SET_STAGE",
-          payload: STAGES.SUPPLIED_FITTED,
+          payload: STAGES.INP_LINKS,
+        });
+        break;
+
+      case STAGES.USER_DETAILS:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.BASKET,
+        });
+        break;
+
+      case STAGES.DATE_TIME_AVA:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.USER_DETAILS,
         });
         break;
 
@@ -50,7 +64,7 @@ export default function CommandButtons() {
   };
 
   return (
-    <div className="p-4 flex items-center justify-between border-b border-slate-200">
+    <div className="flex p-4 items-center justify-between border-b border-slate-200">
       {/* Previous */}
       <button
         onClick={handlePrevious}

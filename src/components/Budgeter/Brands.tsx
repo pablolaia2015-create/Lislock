@@ -41,7 +41,7 @@ export default function Brands() {
      */
     dispatch({
       type: "SET_STAGE",
-      payload: STAGES.SUPPLIED_FITTED,
+      payload: STAGES.INP_LINKS,
     });
   };
 

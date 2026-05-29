@@ -57,15 +57,16 @@ const EUROPEAN_CODES = [
   { name: "Vatican City", code: "39", iso: "VA" },
 ];
 
-export function CountryCodePicker({ m }: { m: Messages["bookingPage"] }) {
-  const code = m.form.fields.code;
+export function CountryCodePicker({ m }: { m?: Messages["bookingPage"] }) {
+  const code = m?.form.fields.code ?? "353";
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 w-full">
       <select
         id="country-select"
         name="countryCode"
-        className="w-[150px] rounded-l-md border border-r-0 border-slate-300 bg-white px-2 py-2 text-sm focus:outline-none"
-        defaultValue={code} // Set Portugal as default since you use isPt
+        className="w-full rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm focus:outline-none"
+        defaultValue={code}
       >
         {EUROPEAN_CODES.map((item) => (
           <option key={item.iso} value={item.code}>

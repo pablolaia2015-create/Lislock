@@ -2,7 +2,13 @@
 
 import { createContext, Dispatch, ReactNode, useReducer } from "react";
 
-export type Stage = "Start" | "Brands" | "SuppliedFitted" | "Basket";
+export type Stage =
+  | "Start"
+  | "Brands"
+  | "InpLinks"
+  | "Basket"
+  | "UserDetails"
+  | "DateTimeAva";
 
 export type BrandName = "ikea" | "jysk" | "wayfair";
 
@@ -27,6 +33,15 @@ export type ScrapedItem = {
   quantity: number;
 };
 
+export type CustomerDetails = {
+  name: string;
+  email: string;
+  countryCode: string;
+  phone: string;
+  address: string;
+  eircode: string;
+};
+
 interface BudgetState {
   quoteStage: Stage;
 
@@ -37,6 +52,8 @@ interface BudgetState {
   links: ProductLink[];
 
   basket: ScrapedItem[];
+
+  customerDetails: CustomerDetails;
 }
 
 type Action =
@@ -65,13 +82,25 @@ type Action =
     }
   | {
       type: "CLOSE_TAB";
+    }
+  | {
+      type: "CUSTOMER_DETAILS";
+    }
+  | {
+      type: "SET_CUSTOMER_DETAILS";
+      payload: CustomerDetails;
+    }
+  | {
+      type: "DATE_TIME_AVA";
     };
 
 export const STAGES = {
   START: "Start",
   BRANDS: "Brands",
-  SUPPLIED_FITTED: "SuppliedFitted",
+  INP_LINKS: "InpLinks",
   BASKET: "Basket",
+  USER_DETAILS: "UserDetails",
+  DATE_TIME_AVA: "DateTimeAva",
 } as const;
 
 const initialState: BudgetState = {
@@ -84,6 +113,15 @@ const initialState: BudgetState = {
   links: [],
 
   basket: [],
+
+  customerDetails: {
+    name: "",
+    email: "",
+    countryCode: "353",
+    phone: "",
+    address: "",
+    eircode: "",
+  },
 };
 
 const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
@@ -134,10 +172,28 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
         quoteStage: STAGES.BASKET,
       };
 
+    case "CUSTOMER_DETAILS":
+      return {
+        ...state,
+        quoteStage: STAGES.USER_DETAILS,
+      };
+
+    case "SET_CUSTOMER_DETAILS":
+      return {
+        ...state,
+        customerDetails: action.payload,
+      };
+
     case "CLOSE_TAB":
       return {
         ...state,
         quoteStage: STAGES.START,
+      };
+
+    case "DATE_TIME_AVA":
+      return {
+        ...state,
+        quoteStage: STAGES.DATE_TIME_AVA,
       };
 
     default:

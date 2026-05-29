@@ -5,11 +5,15 @@ import Brands from "./Brands";
 import Items from "./Items";
 import Basket from "./Basket";
 import CommandButtons from "./CommandButtons";
+import enBookingPage from "@/messages/en/bookingPage.json";
 
 import { BudgeterContext, STAGES } from "@/context/budgeter";
+import UserDetails from "./UserDetails";
+import DateTimePicker from "./DateTimePicker";
 
 export default function TheBudgeter() {
   const [state] = useContext(BudgeterContext);
+  const m = enBookingPage;
 
   const isOverlay = state.quoteStage !== STAGES.START;
 
@@ -24,12 +28,18 @@ export default function TheBudgeter() {
           <div className="relative h-full bg-white flex flex-col">
             <CommandButtons />
 
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 p-2 min-h-0">
               {state.quoteStage === STAGES.BRANDS && <Brands />}
 
-              {state.quoteStage === STAGES.SUPPLIED_FITTED && <Items />}
+              {state.quoteStage === STAGES.INP_LINKS && <Items />}
 
               {state.quoteStage === STAGES.BASKET && <Basket />}
+
+              {state.quoteStage === STAGES.USER_DETAILS && <UserDetails />}
+
+              {state.quoteStage === STAGES.DATE_TIME_AVA && (
+                <DateTimePicker m={m} />
+              )}
             </div>
           </div>
         </div>

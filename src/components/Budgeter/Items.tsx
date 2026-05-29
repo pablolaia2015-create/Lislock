@@ -177,86 +177,92 @@ export default function Items() {
   }
 
   return (
-    <div className="flex flex-col px-3 py-6 gap-6">
-      <div className="text-center">
+    <div className="flex h-full min-h-0 flex-col px-3 py-6 gap-4">
+      {/* HEADER */}
+      <div className="shrink-0 text-cente">
         <p className="text-2xl font-semibold text-slate-900">
           Insert your links
         </p>
 
         <p className="text-sm text-slate-500">Add one or more product links</p>
       </div>
-
-      <div className="flex flex-col gap-4">
-        {links.map((link, index) => (
-          <div
-            key={index}
-            className="border border-slate-200 rounded-xl p-3 flex flex-col gap-3"
-          >
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="https://www.example.com/..."
-                value={link.url}
-                onChange={(e) => handleChangeLink(index, e.target.value)}
-                className="flex-1 border border-slate-300 rounded-lg px-4 py-2 outline-none focus:border-black"
-              />
-
-              {links.length > 1 && (
-                <button
-                  onClick={() => handleRemoveLink(index)}
-                  className="px-4 rounded-lg border border-red-300 text-red-500"
-                >
-                  <Trash />
-                </button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <p className="text-sm text-slate-500">Quantity</p>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleQuantity(index, "decrease")}
-                  className="w-8 h-8 border rounded-lg"
-                >
-                  -
-                </button>
-
-                <span className="w-6 text-center">{link.quantity}</span>
-
-                <button
-                  onClick={() => handleQuantity(index, "increase")}
-                  className="w-8 h-8 border rounded-lg"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex gap-3">
+      {/* ADD PRODUCT */}
+      <div className="shrink-0">
         <button
           onClick={handleAddLink}
-          className="border border-slate-300 rounded-lg py-2 px-4 hover:bg-slate-100"
+          className="w-full border border-slate-300 rounded-xl py-3 hover:bg-slate-100"
         >
           Add product
         </button>
+      </div>
 
+      {/* SCROLLABLE LINKS */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="flex flex-col gap-4 pr-1">
+          {links.map((link, index) => (
+            <div
+              key={index}
+              className="border border-slate-200 rounded-xl p-3 flex flex-col gap-3"
+            >
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="https://www.example.com/..."
+                  value={link.url}
+                  onChange={(e) => handleChangeLink(index, e.target.value)}
+                  className="flex-1 border border-slate-300 rounded-lg px-4 py-2 outline-none focus:border-black"
+                />
+
+                {links.length > 1 && (
+                  <button
+                    onClick={() => handleRemoveLink(index)}
+                    className="px-4 rounded-lg border border-red-300 text-red-500"
+                  >
+                    <Trash />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-3">
+                <p className="text-sm text-slate-500">Quantity</p>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleQuantity(index, "decrease")}
+                    className="w-8 h-8 border rounded-lg"
+                  >
+                    -
+                  </button>
+
+                  <span className="w-6 text-center">{link.quantity}</span>
+
+                  <button
+                    onClick={() => handleQuantity(index, "increase")}
+                    className="w-8 h-8 border rounded-lg"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+        {/* ERROR */}
+        {error && (
+          <div className="shrink-0 bg-red-50 border border-red-200 text-red-500 rounded-lg p-3">
+            {error}
+          </div>
+        )}
+      {/* FOOTER */}
+      <div className="shrink-0 border-t pt-4 mt-auto">
         <button
           onClick={handleSendLinks}
-          className="bg-black text-white rounded-lg py-2 px-4"
+          className="w-full bg-black text-white rounded-xl py-4 hover:opacity-90 transition"
         >
           Continue
         </button>
       </div>
-
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-500 rounded-lg p-3">
-          {error}
-        </div>
-      )}
     </div>
   );
 }
