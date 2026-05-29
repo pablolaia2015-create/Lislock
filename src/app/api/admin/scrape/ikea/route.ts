@@ -4,7 +4,14 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const response = await fetch("http://34.89.51.30:3000/scrape-ikea", {
+    const access = [
+      "http://34.89.51.30:3000/scrape-ikea",
+      "http://localhost:3000/scrape-ikea",
+    ];
+
+    const url = 0;
+
+    const response = await fetch(access[url], {
       method: "POST",
 
       headers: {

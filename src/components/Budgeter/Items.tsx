@@ -137,6 +137,7 @@ export default function Items() {
         throw new Error("Invalid scraper response");
       }
 
+      console.log(data, "Data");
       const mergedData: ScrapedItem[] = data.map(
         (item: Omit<ScrapedItem, "quantity" | "brand">, index: number) => ({
           ...item,
@@ -248,12 +249,12 @@ export default function Items() {
           ))}
         </div>
       </div>
-        {/* ERROR */}
-        {error && (
-          <div className="shrink-0 bg-red-50 border border-red-200 text-red-500 rounded-lg p-3">
-            {error}
-          </div>
-        )}
+      {/* ERROR */}
+      {error && (
+        <div className="shrink-0 bg-red-50 border border-red-200 text-red-500 rounded-lg p-3">
+          {error}
+        </div>
+      )}
       {/* FOOTER */}
       <div className="shrink-0 border-t pt-4 mt-auto">
         <button

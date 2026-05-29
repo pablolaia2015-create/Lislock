@@ -15,6 +15,7 @@ export default function Basket() {
   const [state, dispatch] = useContext(BudgeterContext);
 
   const items = state.basket;
+  console.log(items);
 
   const groupedItems = useMemo(() => {
     return items.reduce(
@@ -39,12 +40,9 @@ export default function Basket() {
     }, 0) + callOutFee;
 
   const handleRemoveItem = (itemToRemove: ScrapedItem) => {
-    const updatedBasket = items.filter(
-      (item) =>
-        !(
-          item.model === itemToRemove.model && item.brand === itemToRemove.brand
-        ),
-    );
+    console.log(items);
+    console.log(itemToRemove);
+    const updatedBasket = items.filter((item) => item.url !== itemToRemove.url);
 
     dispatch({
       type: "SET_BASKET",

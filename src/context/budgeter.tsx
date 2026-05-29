@@ -19,6 +19,8 @@ export type ProductLink = {
 };
 
 export type ScrapedItem = {
+  url: string;
+
   brand: BrandName;
 
   name: string;
