@@ -2,13 +2,19 @@
 
 import { createContext, Dispatch, ReactNode, useReducer } from "react";
 
+export type BookingDetails = {
+  date: string;
+  time: string;
+};
+
 export type Stage =
   | "Start"
   | "Brands"
   | "InpLinks"
   | "Basket"
   | "UserDetails"
-  | "DateTimeAva";
+  | "DateTimeAva"
+  | "ConfirmBooking";
 
 export type BrandName = "ikea" | "jysk" | "wayfair";
 
@@ -56,6 +62,8 @@ interface BudgetState {
   basket: ScrapedItem[];
 
   customerDetails: CustomerDetails;
+
+  bookingDetails: BookingDetails;
 }
 
 type Action =
@@ -94,6 +102,13 @@ type Action =
     }
   | {
       type: "DATE_TIME_AVA";
+    }
+  | {
+      type: "SET_BOOKING_DETAILS";
+      payload: BookingDetails;
+    }
+  | {
+      type: "CONFIRM_BOOKING";
     };
 
 export const STAGES = {
@@ -103,6 +118,7 @@ export const STAGES = {
   BASKET: "Basket",
   USER_DETAILS: "UserDetails",
   DATE_TIME_AVA: "DateTimeAva",
+  CONFIRM_BOOKING: "ConfirmBooking",
 } as const;
 
 const initialState: BudgetState = {
@@ -123,6 +139,11 @@ const initialState: BudgetState = {
     phone: "",
     address: "",
     eircode: "",
+  },
+
+  bookingDetails: {
+    date: "",
+    time: "",
   },
 };
 
@@ -196,6 +217,18 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
       return {
         ...state,
         quoteStage: STAGES.DATE_TIME_AVA,
+      };
+
+    case "SET_BOOKING_DETAILS":
+      return {
+        ...state,
+        bookingDetails: action.payload,
+      };
+
+    case "CONFIRM_BOOKING":
+      return {
+        ...state,
+        quoteStage: STAGES.CONFIRM_BOOKING,
       };
 
     default:

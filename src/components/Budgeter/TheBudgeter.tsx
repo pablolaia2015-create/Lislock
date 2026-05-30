@@ -10,6 +10,7 @@ import enBookingPage from "@/messages/en/bookingPage.json";
 import { BudgeterContext, STAGES } from "@/context/budgeter";
 import UserDetails from "./UserDetails";
 import DateTimePicker from "./DateTimePicker";
+import ConfirmBooking from "./ConfirmBooking";
 
 export default function TheBudgeter() {
   const [state] = useContext(BudgeterContext);
@@ -39,6 +40,9 @@ export default function TheBudgeter() {
 
               {state.quoteStage === STAGES.DATE_TIME_AVA && (
                 <DateTimePicker m={m} />
+              )}
+              {state.quoteStage === STAGES.CONFIRM_BOOKING && (
+                <ConfirmBooking />
               )}
             </div>
           </div>

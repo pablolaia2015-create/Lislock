@@ -46,6 +46,13 @@ export default function CommandButtons() {
         });
         break;
 
+      case STAGES.CONFIRM_BOOKING:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.DATE_TIME_AVA,
+        });
+        break;
+
       default:
         break;
     }
