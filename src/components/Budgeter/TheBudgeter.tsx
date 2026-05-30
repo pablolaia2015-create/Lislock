@@ -11,12 +11,17 @@ import { BudgeterContext, STAGES } from "@/context/budgeter";
 import UserDetails from "./UserDetails";
 import DateTimePicker from "./DateTimePicker";
 import ConfirmBooking from "./ConfirmBooking";
+import Payment from "./Payment";
 
 export default function TheBudgeter() {
   const [state] = useContext(BudgeterContext);
   const m = enBookingPage;
 
   const isOverlay = state.quoteStage !== STAGES.START;
+  const total = state.basket.reduce(
+    (acc, item) => acc + Number(item.assemblyPrice) * item.quantity,
+    0,
+  );
 
   return (
     <div>
@@ -44,6 +49,7 @@ export default function TheBudgeter() {
               {state.quoteStage === STAGES.CONFIRM_BOOKING && (
                 <ConfirmBooking />
               )}
+              {state.quoteStage === STAGES.PAYMENT && <Payment total={total} />}
             </div>
           </div>
         </div>

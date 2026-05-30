@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { BudgeterContext } from "@/context/budgeter";
 
 export default function ConfirmBooking() {
-  const [state] = useContext(BudgeterContext);
+  const [state, dispatch] = useContext(BudgeterContext);
 
   const callOutFee =
     state.basket.length > 0 ? state.basket[0].callOutFee || 0 : 0;
@@ -15,6 +15,12 @@ export default function ConfirmBooking() {
   );
 
   const total = assemblyTotal + callOutFee;
+
+  const handleProceedToPayment = () => {
+    dispatch({
+      type: "PAYMENT",
+    });
+  };
 
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-3">
@@ -148,7 +154,10 @@ export default function ConfirmBooking() {
 
       {/* FOOTER */}
       <div className="shrink-0 border-t pt-4">
-        <button className="w-full rounded-xl bg-black py-4 text-white transition hover:opacity-90">
+        <button
+          onClick={handleProceedToPayment}
+          className="w-full rounded-xl bg-black py-4 text-white transition hover:opacity-90"
+        >
           Proceed to payment
         </button>
       </div>

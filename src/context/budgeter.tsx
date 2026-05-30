@@ -14,7 +14,8 @@ export type Stage =
   | "Basket"
   | "UserDetails"
   | "DateTimeAva"
-  | "ConfirmBooking";
+  | "ConfirmBooking"
+  | "Payment";
 
 export type BrandName = "ikea" | "jysk" | "wayfair";
 
@@ -50,6 +51,10 @@ export type CustomerDetails = {
   eircode: string;
 };
 
+export type PaymentDetails = {
+  method: "revolut" | "cash" | "";
+};
+
 interface BudgetState {
   quoteStage: Stage;
 
@@ -64,6 +69,8 @@ interface BudgetState {
   customerDetails: CustomerDetails;
 
   bookingDetails: BookingDetails;
+
+  paymentDetails: PaymentDetails;
 }
 
 type Action =
@@ -109,6 +116,13 @@ type Action =
     }
   | {
       type: "CONFIRM_BOOKING";
+    }
+  | {
+      type: "SET_PAYMENT_METHOD";
+      payload: PaymentDetails;
+    }
+  | {
+      type: "PAYMENT";
     };
 
 export const STAGES = {
@@ -119,6 +133,7 @@ export const STAGES = {
   USER_DETAILS: "UserDetails",
   DATE_TIME_AVA: "DateTimeAva",
   CONFIRM_BOOKING: "ConfirmBooking",
+  PAYMENT: "Payment",
 } as const;
 
 const initialState: BudgetState = {
@@ -144,6 +159,10 @@ const initialState: BudgetState = {
   bookingDetails: {
     date: "",
     time: "",
+  },
+
+  paymentDetails: {
+    method: "",
   },
 };
 
@@ -229,6 +248,18 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
       return {
         ...state,
         quoteStage: STAGES.CONFIRM_BOOKING,
+      };
+
+    case "SET_PAYMENT_METHOD":
+      return {
+        ...state,
+        paymentDetails: action.payload,
+      };
+
+    case "PAYMENT":
+      return {
+        ...state,
+        quoteStage: STAGES.PAYMENT,
       };
 
     default:

@@ -52,6 +52,12 @@ export default function CommandButtons() {
           payload: STAGES.DATE_TIME_AVA,
         });
         break;
+      case STAGES.PAYMENT:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.CONFIRM_BOOKING,
+        });
+        break;
 
       default:
         break;
