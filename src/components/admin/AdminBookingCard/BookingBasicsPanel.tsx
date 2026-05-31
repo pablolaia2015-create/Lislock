@@ -1,5 +1,4 @@
 import { AdminBooking } from "./types";
-import { minutesToHM } from "./utils";
 
 export default function BookingBasicsPanel({
   booking,
@@ -13,26 +12,7 @@ export default function BookingBasicsPanel({
 
   if (!hasBasics) return null;
 
-// ✅ Super safe finish time calculation
-  let calculatedFinishTime = "—";
-  
-  const startTime = booking.startTime;
-  const duration = Number(booking.durationMinutes);
-
-  if (startTime && !isNaN(duration) && duration > 0) {
-    const [hours, minutes] = startTime.split(":").map(Number);
-    
-    if (!isNaN(hours) && !isNaN(minutes)) {
-      const totalMinutes = hours * 60 + minutes + duration;
-      const finalHours = Math.floor(totalMinutes / 60) % 24;
-      const finalMinutes = totalMinutes % 60;
-      
-      calculatedFinishTime = `${String(finalHours).padStart(2, "0")}:${String(finalMinutes).padStart(2, "0")}`;
-    }
-  } else if (startTime) {
-    // If we have a start time but no valid duration yet, just show the start time
-    calculatedFinishTime = startTime;
-  }
+  const duration = Number(booking.finishTime) - Number(booking.startTime);
 
   return (
     <div className=" rounded-lg border bg-slate-50 p-3 ">
@@ -56,7 +36,7 @@ export default function BookingBasicsPanel({
             <div className="text-slate-500 text-center">Finish</div>
             <div className="font-medium text-slate-900 text-center">
               {/* ✅ Replace the duplicated startTime with our new calculation */}
-              {calculatedFinishTime}
+              {booking.finishTime}
             </div>
           </div>
         </div>
@@ -64,11 +44,7 @@ export default function BookingBasicsPanel({
         <div className="w-full align-middle flex flex-col justify-center">
           <div className="text-slate-500 text-center">Duration</div>
           <div className="font-medium text-slate-900 text-center">
-            {typeof booking.durationMinutes === "number"
-              ? `${booking.durationMinutes} min (${minutesToHM(
-                  booking.durationMinutes,
-                )})`
-              : "—"}
+            {duration}
           </div>
         </div>
       </div>

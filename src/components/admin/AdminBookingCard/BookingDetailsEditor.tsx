@@ -140,7 +140,7 @@ export default function BookingDetailsEditor({
 
         <Field label="Budget (€)">
           <input
-            type="number"
+            type="text"
             step="1"
             name="budget"
             value={values.budget}

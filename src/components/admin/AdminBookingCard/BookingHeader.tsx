@@ -222,18 +222,22 @@ export default function BookingHeader({ booking }: { booking: AdminBooking }) {
                 <span>{booking.time}</span>
               </div>
               <p className="font-bold text-md">Customer description: </p>
-              <textarea
-                readOnly={!editing}
-                value={values.description}
-                onChange={(e) =>
-                  setValues((p) => ({ ...p, description: e.target.value }))
-                }
-                className={`text-slate-900 w-full ${
-                  editing
-                    ? "border border-slate-300 rounded px-2 resize-y"
-                    : "border-none cursor-pointer resize-none"
-                }`}
-              />
+              {!editing ? (
+                <p className="border border-slate-300 rounded px-2 py-1">
+                  {values.description}
+                </p>
+              ) : (
+                <textarea
+                  value={values.description}
+                  onChange={(e) =>
+                    setValues((p) => ({
+                      ...p,
+                      description: e.target.value,
+                    }))
+                  }
+                  className="text-slate-900 w-full min-h-[200px] border border-slate-300 rounded px-2 py-1 resize-y"
+                />
+              )}
             </div>
           </div>
           {photosCount > 0 && (
