@@ -4,17 +4,26 @@ import type { Filter } from "mongodb";
 
 type Bucket = "day" | "week" | "month";
 
+type Supply = {
+  qty: number;
+  price: number;
+};
+
 type DbBooking = {
   status: "pending" | "confirmed" | "done" | "cancelled";
   service: string;
-  date: string; // preferred YYYY-MM-DD
-  serviceDate?: string; // real YYYY-MM-DD (optional)
+  date: string;
+  serviceDate?: string;
   name: string;
   createdAt: Date | string;
 
   budget?: number;
   amountReceived?: number;
   tipReceived?: number;
+
+  distanceCost?: number;
+
+  supplies?: Supply[];
 };
 
 function isISODate(s: string): boolean {
@@ -107,6 +116,9 @@ export async function GET(req: Request) {
       budget: 1,
       amountReceived: 1,
       tipReceived: 1,
+
+      supplies: 1,
+      distanceCost: 1,
     })
     .limit(5000)
     .toArray()) as DbBooking[];
@@ -132,7 +144,7 @@ export async function GET(req: Request) {
     (s) => ({
       status: s,
       count: funnelCounts[s],
-    })
+    }),
   );
 
   // -----------------------------------------
@@ -266,10 +278,29 @@ export async function GET(req: Request) {
 
   const totalRevenue = doneDocs.reduce(
     (acc, d) => acc + (d.amountReceived ?? 0),
-    0
+    0,
   );
+
   const totalTips = doneDocs.reduce((acc, d) => acc + (d.tipReceived ?? 0), 0);
+
+  const totalSuppliesCost = doneDocs.reduce((acc, d) => {
+    const suppliesCost =
+      d.supplies?.reduce(
+        (sum, item) => sum + (item.price ?? 0) * (item.qty ?? 0),
+        0,
+      ) ?? 0;
+
+    return acc + suppliesCost;
+  }, 0);
+
+  const totalTravelCost = doneDocs.reduce(
+    (acc, d) => acc + (d.distanceCost ?? 0),
+    0,
+  );
+
   const totalServices = doneDocs.length;
+
+  // -----------------------------------------------------------------
 
   const uniqueCustomers = new Set(
     docs
@@ -277,20 +308,36 @@ export async function GET(req: Request) {
         const createdISO = parseCreatedAtISO(d.createdAt);
         return createdISO ? inRange(createdISO, from, to) : false;
       })
-      .map((d) => d.name.trim().toLowerCase())
+      .map((d) => d.name.trim().toLowerCase()),
   ).size;
 
   const avgTicket = totalServices > 0 ? totalRevenue / totalServices : 0;
   const avgTip = totalServices > 0 ? totalTips / totalServices : 0;
+
+  const netProfit = totalRevenue - totalSuppliesCost - totalTravelCost;
+
+  const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
 
   return NextResponse.json({
     range: { from, to, bucket },
     kpis: {
       totalRevenue,
       totalTips,
+
+      totalSuppliesCost,
+
+      totalTravelCost,
+
+      netProfit,
+
+      profitMargin,
+
       totalServices,
+
       uniqueCustomers,
+
       avgTicket,
+
       avgTip,
     },
     charts: {

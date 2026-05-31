@@ -22,9 +22,21 @@ type DashboardResponse = {
   kpis: {
     totalRevenue: number;
     totalTips: number;
+
+    totalSuppliesCost: number;
+
+    totalTravelCost: number;
+
+    netProfit: number;
+
+    profitMargin: number;
+
     totalServices: number;
+
     uniqueCustomers: number;
+
     avgTicket: number;
+
     avgTip?: number;
   };
   charts: {
@@ -73,11 +85,11 @@ const PIE_COLORS = [
 
 export default function AdminDashboardClient() {
   const [preset, setPreset] = useState<"today" | "week" | "month" | "custom">(
-    "month"
+    "month",
   );
   const [bucket, setBucket] = useState<"day" | "week" | "month">("day");
   const [from, setFrom] = useState(
-    toISODateOnly(new Date(Date.now() - 30 * 86400000))
+    toISODateOnly(new Date(Date.now() - 30 * 86400000)),
   );
   const [to, setTo] = useState(toISODateOnly(new Date()));
   const [loading, setLoading] = useState(false);
@@ -221,7 +233,7 @@ export default function AdminDashboardClient() {
         </div>
       )}
 
-      <div className="grid gap-4 md:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-4 xl:grid-cols-8">
         <KpiCard
           label="Total revenue (done)"
           value={formatMoney(kpis?.totalRevenue ?? 0)}
@@ -238,6 +250,23 @@ export default function AdminDashboardClient() {
         <KpiCard
           label="Average ticket"
           value={formatMoney(kpis?.avgTicket ?? 0)}
+        />
+
+        <KpiCard
+          label="Supply Cost"
+          value={formatMoney(kpis?.totalSuppliesCost ?? 0)}
+        />
+
+        <KpiCard
+          label="Travel Cost"
+          value={formatMoney(kpis?.totalTravelCost ?? 0)}
+        />
+
+        <KpiCard label="Net Profit" value={formatMoney(kpis?.netProfit ?? 0)} />
+
+        <KpiCard
+          label="Margin"
+          value={`${(kpis?.profitMargin ?? 0).toFixed(1)}%`}
         />
       </div>
 
