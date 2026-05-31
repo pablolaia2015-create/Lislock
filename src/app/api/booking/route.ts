@@ -98,7 +98,13 @@ export async function POST(req: Request) {
     let distanceDuration: number | null = null;
 
     try {
-      const baseUrl = window.location.origin;
+      const host = req.headers.get("host") ?? "";
+
+      const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+      const baseUrl = `${protocol}://${host}`;
+
+      console.log(baseUrl, "foi");
 
       const distanceRes = await fetch(`${baseUrl}/api/distance`, {
         method: "POST",
@@ -110,7 +116,6 @@ export async function POST(req: Request) {
           hostname: window.location.hostname,
         }),
       });
-      
 
       if (distanceRes.ok) {
         const distanceData: DistanceResponse = await distanceRes.json();
