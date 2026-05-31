@@ -98,13 +98,19 @@ export async function POST(req: Request) {
     let distanceDuration: number | null = null;
 
     try {
-      const baseUrl = process.env.SITE_URL || "http://localhost:3000";
+      const baseUrl = window.location.origin;
 
       const distanceRes = await fetch(`${baseUrl}/api/distance`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eircode }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eircode,
+          hostname: window.location.hostname,
+        }),
       });
+      
 
       if (distanceRes.ok) {
         const distanceData: DistanceResponse = await distanceRes.json();

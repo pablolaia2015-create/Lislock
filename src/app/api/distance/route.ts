@@ -27,6 +27,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as DistanceRequestBody;
 
     const { eircode, hostname = "" } = body;
+    console.log(hostname)
     const GOOGLE_MAPS_ORIGIN = hostname.includes("lislock")
       ? process.env.GOOGLE_MAPS_ORIGIN_LISBON
       : process.env.GOOGLE_MAPS_ORIGIN_DUBLIN;
