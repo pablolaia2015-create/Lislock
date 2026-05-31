@@ -34,8 +34,13 @@ export default function DistanceInfo({ eircode }: DistanceInfoProps) {
 
         const res = await fetch("/api/distance", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ eircode }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            eircode,
+            hostname: window.location.hostname,
+          }),
         });
 
         const data = await res.json();

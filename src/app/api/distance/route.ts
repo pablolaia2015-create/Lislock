@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 interface DistanceRequestBody {
   eircode?: string;
+  hostname?: string;
 }
 
 interface DistanceApiResult {
@@ -15,11 +16,6 @@ interface DistanceApiResult {
 export async function POST(request: Request) {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
-  const hostname = new URL(request.url).href;
-  console.log(hostname);
-  const GOOGLE_MAPS_ORIGIN = hostname.includes("lislock")
-    ? (process.env.GOOGLE_MAPS_ORIGIN_LISBON ?? "2690-386")
-    : (process.env.GOOGLE_MAPS_ORIGIN_DUBLIN ?? "D05VX80");
   if (!apiKey) {
     return NextResponse.json(
       { error: "GOOGLE_MAPS_API_KEY is not configured" },
@@ -29,8 +25,18 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as DistanceRequestBody;
-    const { eircode } = body;
 
+    const { eircode, hostname = "" } = body;
+    const GOOGLE_MAPS_ORIGIN = hostname.includes("lislock")
+      ? process.env.GOOGLE_MAPS_ORIGIN_LISBON
+      : process.env.GOOGLE_MAPS_ORIGIN_DUBLIN;
+
+    if (!GOOGLE_MAPS_ORIGIN) {
+      return NextResponse.json(
+        { error: "Origin not configured" },
+        { status: 500 },
+      );
+    }
     if (!eircode) {
       return NextResponse.json(
         { error: "Eircode is required" },
