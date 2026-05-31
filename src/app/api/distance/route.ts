@@ -15,8 +15,8 @@ interface DistanceApiResult {
 export async function POST(request: Request) {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
-  const hostname = new URL(request.url).hostname;
-
+  const hostname = new URL(request.url).href;
+  console.log(hostname);
   const GOOGLE_MAPS_ORIGIN = hostname.includes("lislock")
     ? (process.env.GOOGLE_MAPS_ORIGIN_LISBON ?? "2690-386")
     : (process.env.GOOGLE_MAPS_ORIGIN_DUBLIN ?? "D05VX80");
