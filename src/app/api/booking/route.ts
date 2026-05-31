@@ -113,7 +113,7 @@ export async function POST(req: Request) {
         },
         body: JSON.stringify({
           eircode,
-          hostname: window.location.hostname,
+          hostname: baseUrl,
         }),
       });
 
