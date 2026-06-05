@@ -36,7 +36,7 @@ export default async function ContactsPage() {
   const contacts: Contact[] = contactsRaw.map((c) => ({
     ...c,
     _id: c._id.toString(),
-    createdAt: c.createdAt.toISOString(), // ✅ better
+    createdAt: c.createdAt.toLocaleDateString("en-GB"), // ✅ better
   }));
 
   return (

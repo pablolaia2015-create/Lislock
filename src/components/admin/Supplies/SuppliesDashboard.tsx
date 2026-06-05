@@ -55,8 +55,8 @@ export default function SuppliesDashboard() {
         ...item,
         _id: item._id ?? Math.random().toString(),
         photos: item.photos ?? [],
-        createdAt: item.createdAt ?? new Date().toISOString(),
-        updatedAt: item.updatedAt ?? new Date().toISOString(),
+        createdAt: item.createdAt ?? new Date().toLocaleDateString("en-GB"),
+        updatedAt: item.updatedAt ?? new Date().toLocaleDateString("en-GB"),
       })) as SupplyUI[];
       setItems(formatted);
     } catch {

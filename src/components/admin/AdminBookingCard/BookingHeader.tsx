@@ -93,7 +93,7 @@ export default function BookingHeader({ booking }: { booking: AdminBooking }) {
                 <input
                   type="datetime-local"
                   readOnly={!editing}
-                  value={new Date(values.createdAt).toISOString().slice(0, 16)}
+                  value={new Date(values.createdAt).toLocaleDateString("en-GB").slice(0, 16)}
                   onChange={(e) =>
                     setValues((p) => ({
                       ...p,
