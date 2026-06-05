@@ -39,7 +39,7 @@ export async function GET(req: Request) {
   for (let i = 0; i < 30; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    days.push(d.toLocaleDateString("en-GB").slice(0, 10));
+    days.push(d.toISOString().slice(0, 10));
   }
 
   const bookings = await db

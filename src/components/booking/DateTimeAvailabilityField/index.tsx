@@ -78,14 +78,14 @@ export default function DateTimeAvailabilityField({
       return;
     }
 
-    const date = selected.toLocaleDateString("en-GB").slice(0, 10);
+    const date = selected.toISOString().slice(0, 10);
 
     fetch(`/api/availability?date=${date}&duration=${durationMinutes}`)
       .then((r) => r.json())
       .then(setSlots);
   }, [selected, durationMinutes, controlledTime]);
 
-  const isoDate = selected ? selected.toLocaleDateString("en-GB").slice(0, 10) : "";
+  const isoDate = selected ? selected.toISOString().slice(0, 10) : "";
 
   const locale = m.dayPicker.locale === "en" ? enIE : pt;
 
