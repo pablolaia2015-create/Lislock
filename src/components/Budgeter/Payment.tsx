@@ -1,7 +1,7 @@
 "use client";
 
 import { BudgeterContext } from "@/context/budgeter";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Image from "next/image";
 import { Banknote } from "lucide-react";
 
@@ -17,6 +17,11 @@ export default function Payment({ total }: Props) {
       type: "PAYMENT",
     });
   };
+
+  const [paymentMethod, setPaymentMethod] = useState<"revolut" | "cash">(
+    "revolut",
+  );
+
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-3">
       {/* HEADER */}
@@ -38,61 +43,73 @@ export default function Payment({ total }: Props) {
             <p className="mt-2 text-4xl font-bold">€{total.toFixed(2)}</p>
           </section>
 
-          {/* REVOLUT */}
           <section className="rounded-2xl border border-slate-200 p-5">
-            <h3 className="font-semibold">Pay with Revolut</h3>
+            <h3 className="mb-4 font-semibold">Payment method</h3>
 
-            <p className="mt-1 text-sm text-slate-500">
-              Scan the QR code or use the payment link below.
-            </p>
-
-            {/* QR CODE */}
-            <div className="mt-5 flex justify-center">
-              <div className="relative h-64 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white p-2">
-                <Image
-                  src="/images/RevoQrCode.jpeg"
-                  alt="Revolut QR Code"
-                  fill
-                  className="object-contain"
+            <div className="space-y-3">
+              {/* Revolut */}
+              <label
+                className={`flex cursor-pointer items-center gap-4 rounded-xl border p-4 transition ${
+                  paymentMethod === "revolut"
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-slate-200"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  checked={paymentMethod === "revolut"}
+                  onChange={() => setPaymentMethod("revolut")}
+                  className="hidden"
                 />
-              </div>
-            </div>
 
-            {/* REVOLUT LINK */}
-            <a
-              href="https://revolut.me/alvaro_souza"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 flex h-12 items-center justify-center rounded-xl bg-black text-white transition hover:opacity-90"
-            >
-              Open Revolut Payment Link
-            </a>
-          </section>
-
-          {/* CASH OPTION */}
-          <section className="rounded-2xl border border-slate-200 p-5">
-            <label className="flex cursor-pointer items-start gap-4">
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="cash"
-                className="mt-2"
-              />
-
-              <div className="flex gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100">
-                  <Banknote className="h-6 w-6" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white border">
+                  <Image
+                    src="/images/revolut-icon.png"
+                    alt="Revolut"
+                    width={28}
+                    height={28}
+                  />
                 </div>
 
                 <div>
-                  <p className="font-semibold">Pay in cash at home</p>
+                  <p className="font-medium">Pay with Revolut</p>
 
                   <p className="text-sm text-slate-500">
-                    Pay the technician directly after the service is completed.
+                    Secure your booking immediately.
                   </p>
                 </div>
-              </div>
-            </label>
+              </label>
+
+              {/* Cash */}
+              <label
+                className={`flex cursor-pointer items-center gap-4 rounded-xl border p-4 transition ${
+                  paymentMethod === "cash"
+                    ? "border-green-500 bg-green-50"
+                    : "border-slate-200"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  checked={paymentMethod === "cash"}
+                  onChange={() => setPaymentMethod("cash")}
+                  className="hidden"
+                />
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100">
+                  <Banknote className="h-6 w-6 text-green-700" />
+                </div>
+
+                <div>
+                  <p className="font-medium">Pay in cash</p>
+
+                  <p className="text-sm text-slate-500">
+                    Pay the technician after the service is completed.
+                  </p>
+                </div>
+              </label>
+            </div>
           </section>
 
           {/* NOTICE */}

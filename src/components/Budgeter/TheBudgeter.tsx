@@ -19,7 +19,7 @@ export default function TheBudgeter() {
 
   const isOverlay = state.quoteStage !== STAGES.START;
   const total = state.basket.reduce(
-    (acc, item) => acc + Number(item.assemblyPrice) * item.quantity,
+    (acc, item) => acc + Number(item.assemblyPrice) * item.quantity + 40,
     0,
   );
 
