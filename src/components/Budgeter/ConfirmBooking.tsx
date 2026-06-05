@@ -6,8 +6,7 @@ import { BudgeterContext } from "@/context/budgeter";
 export default function ConfirmBooking() {
   const [state, dispatch] = useContext(BudgeterContext);
 
-  const callOutFee =
-    state.basket.length > 0 ? state.basket[0].callOutFee || 0 : 0;
+  const callOutFee = 40;
 
   const assemblyTotal = state.basket.reduce(
     (acc, item) => acc + Number(item.assemblyPrice) * item.quantity,
@@ -21,6 +20,10 @@ export default function ConfirmBooking() {
       type: "PAYMENT",
     });
   };
+
+  const hasItemsNeedingReview = state.basket.some(
+    (item) => Number(item.assemblyPrice) === 0,
+  );
 
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-3">
@@ -110,9 +113,18 @@ export default function ConfirmBooking() {
                   </div>
 
                   <div className="text-right">
-                    <p>
-                      €{(Number(item.assemblyPrice) * item.quantity).toFixed(2)}
-                    </p>
+                    {Number(item.assemblyPrice) === 0 ? (
+                      <span className="text-sm font-medium text-amber-600">
+                        Requires review
+                      </span>
+                    ) : (
+                      <p>
+                        €
+                        {(Number(item.assemblyPrice) * item.quantity).toFixed(
+                          2,
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -127,13 +139,19 @@ export default function ConfirmBooking() {
               <div className="flex justify-between">
                 <span>Assembly</span>
 
-                <span>€{assemblyTotal.toFixed(2)}</span>
+                {Number(assemblyTotal) === 0 ? (
+                  <span className="text-sm font-medium text-amber-600">
+                    Requires review
+                  </span>
+                ) : (
+                  <span>€{assemblyTotal.toFixed(2)}</span>
+                )}
               </div>
 
               <div className="flex justify-between">
                 <span>Call-out fee</span>
 
-                <span>€{callOutFee.toFixed(2)}</span>
+                <span>€{callOutFee}</span>
               </div>
 
               <div className="mt-2 flex justify-between border-t pt-3 text-lg font-semibold">
@@ -143,6 +161,20 @@ export default function ConfirmBooking() {
               </div>
             </div>
           </section>
+
+          {hasItemsNeedingReview && (
+            <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <h3 className="font-semibold text-amber-800">
+                Manual review required
+              </h3>
+
+              <p className="mt-1 text-sm text-amber-700">
+                One or more items require a manual quote. You can proceed with
+                your booking request, and we&apos;ll review the details and get
+                in touch with a confirmed price as soon as possible.
+              </p>
+            </section>
+          )}
 
           {/* NOTICE */}
           <section className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">

@@ -50,6 +50,8 @@ export default function Basket() {
     });
   };
 
+  const hasItemsNeedingReview = items.some((item) => item.assemblyPrice === 0);
+
   const handleQuantity = (
     itemToUpdate: ScrapedItem,
     type: "increase" | "decrease",
@@ -149,12 +151,34 @@ export default function Basket() {
                             <Trash size={18} />
                           </button>
                         </div>
+                        {assembly === 0 && (
+                          <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                            <p className="font-medium text-amber-800">
+                              Manual quote required
+                            </p>
+
+                            <p className="text-sm text-amber-700">
+                              We couldn&apos;t automatically calculate the
+                              assembly price for this item.
+                            </p>
+                          </div>
+                        )}
 
                         <div className="flex flex-col gap-2 text-sm">
                           <div className="flex items-center justify-between">
                             <p>Assembly</p>
-
-                            <p>€{assembly}</p>
+                            {Number(item.assemblyPrice) === 0 ? (
+                              <span className="text-sm font-medium text-amber-600">
+                                Requires review
+                              </span>
+                            ) : (
+                              <p>
+                                €
+                                {(
+                                  Number(item.assemblyPrice) * item.quantity
+                                ).toFixed(2)}
+                              </p>
+                            )}
                           </div>
 
                           <div className="flex items-center justify-between">
@@ -184,9 +208,13 @@ export default function Basket() {
                           <div className="border-t pt-3 mt-2 flex items-center justify-between">
                             <p className="font-medium">Total</p>
 
-                            <p className="font-semibold text-base">
-                              €{itemTotal.toFixed(2)}
-                            </p>
+                            {Number(itemTotal) === 0 ? (
+                              <span className="text-sm font-medium text-amber-600">
+                                Requires review
+                              </span>
+                            ) : (
+                              <p>€ €{itemTotal.toFixed(2)}</p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -206,7 +234,17 @@ export default function Basket() {
           <p>€{callOutFee}</p>
         </div>
         {/*  */}
+        {hasItemsNeedingReview && (
+          <div className="rounded-lg border border-amber-300 bg-amber-50 p-4">
+            <p className="font-medium text-amber-800">Manual review required</p>
 
+            <p className="text-sm text-amber-700 mt-1">
+              One or more items require a manual quote. You can proceed with
+              your booking request, and we&apos;ll review the details and get in
+              touch with a confirmed price as soon as possible.
+            </p>
+          </div>
+        )}
         {/* FOOTER */}
         <div className="flex items-center justify-between">
           <div>
