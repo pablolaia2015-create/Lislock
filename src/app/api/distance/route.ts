@@ -87,7 +87,7 @@ export async function POST(request: Request) {
     // -------------------------
 
     const hours = (durationMinutes * 2) / 60; // convert minutes -> hours
-    const baseCost = hours * 25; // €25 per hour
+    const baseCost = hours * 35; // €25 per hour
     const cost = Math.ceil(baseCost * 1.05);
     // -------------------------
 

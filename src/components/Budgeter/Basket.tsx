@@ -36,7 +36,7 @@ export default function Basket() {
 
   const total =
     items.reduce((acc, item) => {
-      return acc + Math.ceil(item.assemblyPrice) * item.quantity;
+      return acc + item.assemblyPrice * item.quantity;
     }, 0) + callOutFee;
 
   const handleRemoveItem = (itemToRemove: ScrapedItem) => {
@@ -122,7 +122,7 @@ export default function Basket() {
 
                 <div className="flex flex-col gap-4">
                   {brandItems.map((item) => {
-                    const assembly = Math.ceil(item.assemblyPrice);
+                    const assembly = item.assemblyPrice;
 
                     const itemTotal = assembly * item.quantity;
 
