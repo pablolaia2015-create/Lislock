@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-
 type ServiceCategory =
   | "Internal Doors Installation"
   | "Shower Doors Installation"
@@ -13,12 +12,12 @@ const CATEGORY_DATA: Record<
   { price: number; canPaint: boolean; canDispose: boolean }
 > = {
   "Internal Doors Installation": {
-    price: 150,
+    price: 180,
     canPaint: true,
     canDispose: true,
   },
   "Shower Doors Installation": {
-    price: 170,
+    price: 250,
     canPaint: false,
     canDispose: true,
   },
@@ -43,9 +42,9 @@ export default function IntegratedBudgeter() {
   });
 
   const selectedData = CATEGORY_DATA[category];
-  const DISPOSAL_RATE = 30;
-  const PAINT_RATE = 60;
-  const CALL_OUT_FEE = 30;
+  const DISPOSAL_RATE = 50;
+  const PAINT_RATE = 100;
+  const CALL_OUT_FEE = 40;
 
   const totalBase = quantity * selectedData.price;
   const totalDisposal = dispose === "yes" ? quantity * DISPOSAL_RATE : 0;
@@ -87,7 +86,7 @@ export default function IntegratedBudgeter() {
   return (
     <div className="max-w-2xl mx-auto p-4 bg-white rounded-2xl shadow-xl border border-slate-100">
       {/* Progress Header */}
-      
+
       <div className="flex justify-between mb-8 px-4">
         <div
           className={`flex flex-col items-center ${step >= 1 ? "text-cyan-600" : "text-slate-300"}`}
@@ -204,7 +203,7 @@ export default function IntegratedBudgeter() {
               <span>€{grandTotal}</span>
             </div>
             <p className="text-[10px] text-cyan-700 mt-1">
-              *Includes €30 call-out/admin fee
+              *Includes €40 call-out/admin fee
             </p>
           </div>
 
