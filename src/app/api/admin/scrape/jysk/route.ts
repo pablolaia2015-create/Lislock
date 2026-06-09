@@ -4,15 +4,18 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const response = await fetch("http://34.89.51.30:3000/scrape-jysk", {
-      method: "POST",
+    const response = await fetch(
+      "https://furniture-quoter-568473948860.europe-west1.run.app/scrape-jysk",
+      {
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(body),
       },
-
-      body: JSON.stringify(body),
-    });
+    );
 
     const data = await response.json();
 

@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const access = [
-      "http://34.89.51.30:3000/scrape-ikea",
+      "https://furniture-quoter-568473948860.europe-west1.run.app/scrape-ikea",
       "http://localhost:3000/scrape-ikea",
     ];
 

@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, Dispatch, ReactNode, useReducer } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  useEffect,
+  useReducer,
+} from "react";
 
 export type BookingDetails = {
   date: string;
@@ -301,7 +307,23 @@ export const BudgeterContext = createContext<[BudgetState, Dispatch<Action>]>([
 ]);
 
 export const BudgeterProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(budgeterReducer, initialState);
+  const [state, dispatch] = useReducer(
+    budgeterReducer,
+    initialState,
+    (initial) => {
+      if (typeof window === "undefined") {
+        return initial;
+      }
+
+      const saved = localStorage.getItem("budgeter-state");
+
+      return saved ? JSON.parse(saved) : initial;
+    },
+  );
+
+  useEffect(() => {
+    localStorage.setItem("budgeter-state", JSON.stringify(state));
+  }, [state]);
 
   return (
     <BudgeterContext.Provider value={[state, dispatch]}>
