@@ -15,7 +15,8 @@ export type Stage =
   | "UserDetails"
   | "DateTimeAva"
   | "ConfirmBooking"
-  | "Payment";
+  | "Payment"
+  | "BookingConfirmation";
 
 export type BrandName = "ikea" | "jysk" | "wayfair";
 
@@ -51,6 +52,11 @@ export type CustomerDetails = {
   eircode: string;
 };
 
+export type BasketTotal = {
+  assemblyTotal: number;
+  basketTotal: number;
+};
+
 export type PaymentDetails = {
   method: "revolut" | "cash" | "";
 };
@@ -66,11 +72,15 @@ interface BudgetState {
 
   basket: ScrapedItem[];
 
+  basketTotal: BasketTotal;
+
   customerDetails: CustomerDetails;
 
   bookingDetails: BookingDetails;
 
   paymentDetails: PaymentDetails;
+
+  callOutFee: number;
 }
 
 type Action =
@@ -123,6 +133,10 @@ type Action =
     }
   | {
       type: "PAYMENT";
+    }
+  | {
+      type: "SET_BASKET_TOTAL";
+      payload: BasketTotal;
     };
 
 export const STAGES = {
@@ -134,6 +148,7 @@ export const STAGES = {
   DATE_TIME_AVA: "DateTimeAva",
   CONFIRM_BOOKING: "ConfirmBooking",
   PAYMENT: "Payment",
+  BOOKING_CONFIRMATION: "BookingConfirmation",
 } as const;
 
 const initialState: BudgetState = {
@@ -146,6 +161,13 @@ const initialState: BudgetState = {
   links: [],
 
   basket: [],
+
+  basketTotal: {
+    assemblyTotal: 0,
+    basketTotal: 0,
+  },
+
+  callOutFee: 40,
 
   customerDetails: {
     name: "",
@@ -260,6 +282,12 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
       return {
         ...state,
         quoteStage: STAGES.PAYMENT,
+      };
+
+    case "SET_BASKET_TOTAL":
+      return {
+        ...state,
+        basketTotal: action.payload,
       };
 
     default:

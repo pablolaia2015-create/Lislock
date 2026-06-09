@@ -55,8 +55,8 @@ export default function SuppliesDashboard() {
         ...item,
         _id: item._id ?? Math.random().toString(),
         photos: item.photos ?? [],
-        createdAt: item.createdAt ?? new Date().toLocaleDateString("en-GB"),
-        updatedAt: item.updatedAt ?? new Date().toLocaleDateString("en-GB"),
+        createdAt: item.createdAt ?? new Date().toISOString(),
+        updatedAt: item.updatedAt ?? new Date().toISOString(),
       })) as SupplyUI[];
       setItems(formatted);
     } catch {
@@ -81,13 +81,16 @@ export default function SuppliesDashboard() {
 
   const getTotalStock = (item: SupplyUI) => {
     return item.storeEntries.reduce((total, store) => {
-      return total + store.inventory.reduce((sum, inv) => sum + (Number(inv.qty) || 0), 0);
+      return (
+        total +
+        store.inventory.reduce((sum, inv) => sum + (Number(inv.qty) || 0), 0)
+      );
     }, 0);
   };
 
   const getLowestPrice = (item: SupplyUI) => {
     if (!item.storeEntries.length) return 0;
-    return Math.min(...item.storeEntries.map(s => Number(s.price) || 0));
+    return Math.min(...item.storeEntries.map((s) => Number(s.price) || 0));
   };
 
   useEffect(() => {
@@ -96,8 +99,8 @@ export default function SuppliesDashboard() {
 
   // Extract unique categories dynamically for the filter dropdown
   const uniqueCategories = useMemo(() => {
-    const cats = new Set(items.map(i => i.category).filter(Boolean));
-    return Array.from(cats).map(c => ({ value: c, label: c }));
+    const cats = new Set(items.map((i) => i.category).filter(Boolean));
+    return Array.from(cats).map((c) => ({ value: c, label: c }));
   }, [items]);
 
   // SMART FILTERING AND SORTING
@@ -106,7 +109,7 @@ export default function SuppliesDashboard() {
 
     // 1. Filter by Category Dropdown
     if (selectedCategory) {
-      result = result.filter(i => i.category === selectedCategory);
+      result = result.filter((i) => i.category === selectedCategory);
     }
 
     // 2. Filter by Search Text
@@ -115,14 +118,17 @@ export default function SuppliesDashboard() {
       result = result.filter(
         (i) =>
           i.name.toLowerCase().includes(s) ||
-          i.color?.toLowerCase().includes(s)
+          i.color?.toLowerCase().includes(s),
       );
     }
 
     // 3. Sort
     switch (sortBy) {
       case "latest":
-        result.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        result.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         break;
       case "az":
         result.sort((a, b) => a.name.localeCompare(b.name));
@@ -139,10 +145,15 @@ export default function SuppliesDashboard() {
   }, [items, search, sortBy, selectedCategory]);
 
   // PAGINATION LOGIC
-  const totalPages = itemsPerPage === 9999 ? 1 : Math.ceil(processedItems.length / itemsPerPage);
-  const currentItems = itemsPerPage === 9999 
-    ? processedItems 
-    : processedItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages =
+    itemsPerPage === 9999 ? 1 : Math.ceil(processedItems.length / itemsPerPage);
+  const currentItems =
+    itemsPerPage === 9999
+      ? processedItems
+      : processedItems.slice(
+          (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage,
+        );
 
   // CONFIGURATION FOR DYNAMIC FILTERS (Passed to the new component)
   const inventoryFilters: FilterGroup[] = [
@@ -152,7 +163,7 @@ export default function SuppliesDashboard() {
       options: uniqueCategories,
       value: selectedCategory,
       onChange: setSelectedCategory,
-    }
+    },
   ];
 
   const sortOpts = [
@@ -164,7 +175,6 @@ export default function SuppliesDashboard() {
 
   return (
     <div className="w-full max-w-[1400px] mx-auto p-4 space-y-4 bg-slate-50/50 min-h-screen">
-      
       {/* HEADER WITH NEW REUSABLE FILTER BAR */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <div className="flex items-center gap-3 w-full md:w-auto">
@@ -177,7 +187,7 @@ export default function SuppliesDashboard() {
         </div>
 
         {/* OUR NEW REUSABLE COMPONENT IN ACTION! */}
-        <FilterBar 
+        <FilterBar
           searchValue={search}
           onSearchChange={setSearch}
           searchPlaceholder="Search name, color..."
@@ -191,7 +201,9 @@ export default function SuppliesDashboard() {
       </div>
 
       <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-2">
-        <p>Showing {currentItems.length} of {processedItems.length} items</p>
+        <p>
+          Showing {currentItems.length} of {processedItems.length} items
+        </p>
       </div>
 
       {/* ITEM LIST */}
@@ -205,10 +217,17 @@ export default function SuppliesDashboard() {
               <div className="md:w-48 lg:w-56 bg-slate-50/50 p-4 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100">
                 <div
                   className="relative w-32 h-32 bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden cursor-zoom-in transition-transform hover:scale-105"
-                  onClick={() => item.photos?.[0] && setSelectedImage(item.photos[0])}
+                  onClick={() =>
+                    item.photos?.[0] && setSelectedImage(item.photos[0])
+                  }
                 >
                   {item.photos?.[0] ? (
-                    <Image src={item.photos[0]} alt={item.name} fill className="object-contain p-2" />
+                    <Image
+                      src={item.photos[0]}
+                      alt={item.name}
+                      fill
+                      className="object-contain p-2"
+                    />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-300">
                       <Package size={32} />
@@ -248,8 +267,10 @@ export default function SuppliesDashboard() {
                     </button>
                   </div>
                 </div>
-                
-                <h2 className="text-lg font-bold text-slate-800 ">{item.name}</h2>
+
+                <h2 className="text-lg font-bold text-slate-800 ">
+                  {item.name}
+                </h2>
 
                 <div className="mb-4 bg-slate-50 rounded-lg p-3 border border-slate-100">
                   <p className="text-slate-600 text-xs leading-relaxed max-h-25 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 pr-2 italic">
@@ -262,31 +283,42 @@ export default function SuppliesDashboard() {
                     <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase mb-1">
                       <Palette size={12} /> Color
                     </span>
-                    <p className="text-xs font-semibold text-slate-700 truncate">{item.color || "N/A"}</p>
+                    <p className="text-xs font-semibold text-slate-700 truncate">
+                      {item.color || "N/A"}
+                    </p>
                   </div>
                   <div>
                     <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase mb-1">
                       <Layers size={12} /> Service
                     </span>
-                    <p className="text-xs font-semibold text-slate-700 truncate">{item.serviceSlug || "N/A"}</p>
+                    <p className="text-xs font-semibold text-slate-700 truncate">
+                      {item.serviceSlug || "N/A"}
+                    </p>
                   </div>
                   <div>
                     <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase mb-1">
                       <Calendar size={12} /> Logged
                     </span>
-                    <p className="text-xs font-semibold text-slate-700">{new Date(item.createdAt).toLocaleDateString()}</p>
+                    <p className="text-xs font-semibold text-slate-700">
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </p>
                   </div>
                   <div>
                     <span className="flex items-center gap-1.5 text-[10px] font-bold text-slate-400 uppercase mb-1">
                       <Store size={12} /> Stockists
                     </span>
-                    <p className="text-xs font-semibold text-slate-700">{item.storeEntries.length} Sources</p>
+                    <p className="text-xs font-semibold text-slate-700">
+                      {item.storeEntries.length} Sources
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {item.storeEntries.map((store, idx) => {
-                    const storeStock = store.inventory.reduce((sum, inv) => sum + (Number(inv.qty) || 0), 0);
+                    const storeStock = store.inventory.reduce(
+                      (sum, inv) => sum + (Number(inv.qty) || 0),
+                      0,
+                    );
 
                     return (
                       <div
@@ -296,8 +328,17 @@ export default function SuppliesDashboard() {
                         <div className="py-1">
                           <p className="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1 flex items-center gap-1">
                             {store.storeName}
-                            <span className={storeStock > 0 ? "text-green-500" : "text-red-400"}>
-                              • {storeStock > 0 ? `${storeStock} IN STOCK` : "OUT OF STOCK"}
+                            <span
+                              className={
+                                storeStock > 0
+                                  ? "text-green-500"
+                                  : "text-red-400"
+                              }
+                            >
+                              •{" "}
+                              {storeStock > 0
+                                ? `${storeStock} IN STOCK`
+                                : "OUT OF STOCK"}
                             </span>
                           </p>
                           <p className="text-sm font-bold text-slate-900 leading-none">
@@ -334,13 +375,20 @@ export default function SuppliesDashboard() {
 
             <div className="flex items-center gap-1 overflow-x-auto max-w-[50vw] hide-scrollbar">
               {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter(page => Math.abs(currentPage - page) <= 2 || page === 1 || page === totalPages)
+                .filter(
+                  (page) =>
+                    Math.abs(currentPage - page) <= 2 ||
+                    page === 1 ||
+                    page === totalPages,
+                )
                 .map((page, index, array) => {
                   const showEllipsis = index > 0 && page - array[index - 1] > 1;
 
                   return (
                     <div key={page} className="flex items-center gap-1">
-                      {showEllipsis && <span className="px-2 text-slate-400">...</span>}
+                      {showEllipsis && (
+                        <span className="px-2 text-slate-400">...</span>
+                      )}
                       <button
                         onClick={() => setCurrentPage(page)}
                         className={`min-w-[32px] h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-all px-2 ${
@@ -400,10 +448,10 @@ export default function SuppliesDashboard() {
             >
               <X size={20} />
             </button>
-            
-           <div className="p-6">
-              <SupplyInput 
-                initialData={items.find((i) => i._id === editingId)} 
+
+            <div className="p-6">
+              <SupplyInput
+                initialData={items.find((i) => i._id === editingId)}
                 onSuccess={() => {
                   setIsModalOpen(false);
                   setEditingId(null);
@@ -414,7 +462,7 @@ export default function SuppliesDashboard() {
           </div>
         </div>
       )}
-      
+
       {/* OUR NEW BACK TO TOP BUTTON */}
       <BackToTop />
     </div>

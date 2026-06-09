@@ -5,22 +5,26 @@ import { useContext, useState } from "react";
 import Image from "next/image";
 import { Banknote } from "lucide-react";
 
-type Props = {
-  total: number;
-};
-
-export default function Payment({ total }: Props) {
-  const [, dispatch] = useContext(BudgeterContext);
+export default function Payment() {
+  const [state, dispatch] = useContext(BudgeterContext);
 
   const handleContinue = () => {
     dispatch({
-      type: "PAYMENT",
+      type: "SET_PAYMENT_METHOD",
+      payload: { method: paymentMethod },
+    });
+
+    dispatch({
+      type: "SET_STAGE",
+      payload: "BookingConfirmation",
     });
   };
 
   const [paymentMethod, setPaymentMethod] = useState<"revolut" | "cash">(
     "revolut",
   );
+
+  const total = state.basketTotal.basketTotal;
 
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-3">

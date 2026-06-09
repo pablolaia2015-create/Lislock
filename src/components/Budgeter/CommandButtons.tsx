@@ -59,6 +59,13 @@ export default function CommandButtons() {
         });
         break;
 
+      case STAGES.BOOKING_CONFIRMATION:
+        dispatch({
+          type: "SET_STAGE",
+          payload: STAGES.PAYMENT,
+        });
+        break;
+
       default:
         break;
     }

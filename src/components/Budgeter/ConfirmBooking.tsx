@@ -6,14 +6,11 @@ import { BudgeterContext } from "@/context/budgeter";
 export default function ConfirmBooking() {
   const [state, dispatch] = useContext(BudgeterContext);
 
-  const callOutFee = 40;
+  const callOutFee = state.callOutFee;
 
-  const assemblyTotal = state.basket.reduce(
-    (acc, item) => acc + Number(item.assemblyPrice) * item.quantity,
-    0,
-  );
+  const assemblyTotal = state.basketTotal.assemblyTotal;
 
-  const total = assemblyTotal + callOutFee;
+  const basketTotal = state.basketTotal.basketTotal;
 
   const handleProceedToPayment = () => {
     dispatch({
@@ -80,7 +77,9 @@ export default function ConfirmBooking() {
             <div className="grid gap-2 text-sm">
               <p>
                 <span className="font-medium">Date:</span>{" "}
-                {state.bookingDetails.date}
+                {new Date(state.bookingDetails.date).toLocaleDateString(
+                  "en-IE",
+                )}
               </p>
 
               <p>
@@ -157,7 +156,7 @@ export default function ConfirmBooking() {
               <div className="mt-2 flex justify-between border-t pt-3 text-lg font-semibold">
                 <span>Total</span>
 
-                <span>€{total.toFixed(2)}</span>
+                <span>€{basketTotal.toFixed(2)}</span>
               </div>
             </div>
           </section>

@@ -111,7 +111,7 @@ export async function POST(req: Request) {
       photoPaths.push(objectPath);
     }
 
-    const createdAtISO = new Date().toLocaleDateString("en-GB");
+    const createdAtISO = new Date().toISOString();
 
     const doc: Omit<Review, "_id"> = {
       serviceSlug,

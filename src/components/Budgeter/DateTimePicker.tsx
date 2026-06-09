@@ -23,7 +23,7 @@ export default function DateTimePicker({ m }: Props) {
     dispatch({
       type: "SET_BOOKING_DETAILS",
       payload: {
-        date: selectedDate ? selectedDate.toLocaleDateString("en-GB").slice(0, 10) : "",
+        date: selectedDate ? selectedDate.toISOString().slice(0, 10) : "",
         time,
       },
     });

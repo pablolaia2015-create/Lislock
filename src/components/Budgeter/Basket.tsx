@@ -32,12 +32,13 @@ export default function Basket() {
     );
   }, [items]);
 
-  const callOutFee = 40;
+  const callOutFee = state.callOutFee;
 
-  const total =
-    items.reduce((acc, item) => {
-      return acc + item.assemblyPrice * item.quantity;
-    }, 0) + callOutFee;
+  const assemblyTotal = items.reduce((acc, item) => {
+    return acc + item.assemblyPrice * item.quantity;
+  }, 0);
+
+  const basketTotal = assemblyTotal + callOutFee;
 
   const handleRemoveItem = (itemToRemove: ScrapedItem) => {
     console.log(items);
@@ -250,11 +251,23 @@ export default function Basket() {
           <div>
             <p className="text-sm text-slate-500">Basket total</p>
 
-            <p className="text-4xl font-bold">€{total.toFixed(2)}</p>
+            <p className="text-4xl font-bold">€{basketTotal.toFixed(2)}</p>
           </div>
 
           <button
-            onClick={() => dispatch({ type: "CUSTOMER_DETAILS" })}
+            onClick={() => {
+              dispatch({
+                type: "SET_BASKET_TOTAL",
+                payload: {
+                  assemblyTotal: assemblyTotal,
+                  basketTotal: basketTotal,
+                },
+              });
+
+              dispatch({
+                type: "CUSTOMER_DETAILS",
+              });
+            }}
             className="bg-black text-white rounded-xl px-8 py-4 hover:opacity-90 transition"
           >
             Continue
