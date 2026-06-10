@@ -44,7 +44,7 @@ export default function BookingConfirmation() {
         </div>
 
         {showConfirmation && (
-          <div className="rounded-2xl border border-green-200 bg-green-50 p-6">
+          <div className="rounded-2xl border border-green-200 bg-green-50  p-6">
             <h3 className="text-xl font-semibold text-green-800">
               Booking Request Submitted
             </h3>
@@ -78,7 +78,7 @@ export default function BookingConfirmation() {
         )}
 
         {paymentMethod === "cash" && (
-          <div className="rounded-2xl border border-green-200 bg-green-50 p-5">
+          <div className="rounded-2xl border border-green-200 bg-green-50 p-5 overflow-y-auto">
             <h3 className="font-semibold text-green-800">Cash Payment</h3>
 
             <p className="mt-2 text-sm text-green-700">
@@ -92,7 +92,7 @@ export default function BookingConfirmation() {
         )}
 
         {paymentMethod === "revolut" && !paid && (
-          <div className="rounded-3xl border border-blue-200 bg-gradient-to-b from-blue-50 to-white p-6 shadow-sm">
+          <div className="rounded-3xl border border-blue-200 bg-gradient-to-b overflow-y-auto from-blue-50 to-white p-6 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
                 <CreditCard className="h-6 w-6 text-blue-700" />
