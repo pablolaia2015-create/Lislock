@@ -20,8 +20,7 @@ export default function BookingConfirmation() {
 
   const handleFinish = () => {
     dispatch({
-      type: "SET_STAGE",
-      payload: "Start",
+      type: "SET_FINISH",
     });
   };
 
@@ -33,8 +32,8 @@ export default function BookingConfirmation() {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col px-3 py-6">
-      <div className="flex flex-col gap-6">
+    <div className="flex h-full min-h-0 flex-col overflow-y-auto px-3 py-6">
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-6 pb-24">
         <div>
           <h2 className="text-3xl font-semibold">Booking Confirmation</h2>
 
@@ -78,7 +77,7 @@ export default function BookingConfirmation() {
         )}
 
         {paymentMethod === "cash" && (
-          <div className="rounded-2xl border border-green-200 bg-green-50 p-5 overflow-y-auto">
+          <div className="rounded-2xl border border-green-200 bg-green-50 p-5">
             <h3 className="font-semibold text-green-800">Cash Payment</h3>
 
             <p className="mt-2 text-sm text-green-700">
@@ -92,7 +91,7 @@ export default function BookingConfirmation() {
         )}
 
         {paymentMethod === "revolut" && !paid && (
-          <div className="rounded-3xl border border-blue-200 bg-gradient-to-b overflow-y-auto from-blue-50 to-white p-6 shadow-sm">
+          <div className="rounded-3xl border border-blue-200 bg-gradient-to-b from-blue-50 to-white p-6 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100">
                 <CreditCard className="h-6 w-6 text-blue-700" />
@@ -122,7 +121,7 @@ export default function BookingConfirmation() {
                   alt="Revolut QR Code"
                   width={220}
                   height={220}
-                  className="rounded-xl"
+                  className="h-auto max-w-full rounded-xl"
                 />
               </div>
             </div>
@@ -139,7 +138,7 @@ export default function BookingConfirmation() {
               href="https://revolut.me/alvaro_souza"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 font-medium text-slate-700 transition hover:bg-slate-50"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-center font-medium text-slate-700 transition hover:bg-slate-50"
             >
               <ExternalLink className="h-4 w-4" />
               Open Revolut Payment Link
@@ -158,7 +157,7 @@ export default function BookingConfirmation() {
         {paid && (
           <button
             onClick={handleFinish}
-            className="bg-black text-white rounded-xl py-4"
+            className="w-full rounded-xl bg-black py-4 text-white"
           >
             Finish
           </button>

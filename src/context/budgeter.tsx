@@ -143,6 +143,9 @@ type Action =
   | {
       type: "SET_BASKET_TOTAL";
       payload: BasketTotal;
+    }
+  | {
+      type: "SET_FINISH";
     };
 
 export const STAGES = {
@@ -155,6 +158,7 @@ export const STAGES = {
   CONFIRM_BOOKING: "ConfirmBooking",
   PAYMENT: "Payment",
   BOOKING_CONFIRMATION: "BookingConfirmation",
+  FINISH: "Finish",
 } as const;
 
 const initialState: BudgetState = {
@@ -295,6 +299,9 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
         ...state,
         basketTotal: action.payload,
       };
+
+    case "SET_FINISH":
+      return initialState;
 
     default:
       return state;
