@@ -230,15 +230,22 @@ const budgeterReducer = (state: BudgetState, action: Action): BudgetState => {
     }
 
     case "SET_BASKET": {
-      const otherBrandsBasket = state.basket.filter(
-        (item) => item.brand !== state.selectedBrand,
-      );
+  const otherBrandsBasket = state.basket.filter(
+    (item) => item.brand !== state.selectedBrand,
+  );
 
-      return {
-        ...state,
-        basket: [...otherBrandsBasket, ...action.payload],
-      };
-    }
+  const mergedBasket = [...otherBrandsBasket, ...action.payload];
+
+  const uniqueBasket = mergedBasket.filter(
+    (item, index, self) =>
+      index === self.findIndex((i) => i.url === item.url),
+  );
+
+  return {
+    ...state,
+    basket: uniqueBasket,
+  };
+}
 
     case "GO_TO_BASKET":
       return {

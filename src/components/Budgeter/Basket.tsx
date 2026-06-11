@@ -15,7 +15,6 @@ export default function Basket() {
   const [state, dispatch] = useContext(BudgeterContext);
 
   const items = state.basket;
-  console.log(items);
 
   const groupedItems = useMemo(() => {
     return items.reduce(
