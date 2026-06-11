@@ -101,6 +101,15 @@ export default function Items() {
   };
 
   const handleSendLinks = async () => {
+    const hasDuplicates = Object.values(duplicateUrls).some(
+      (count) => count > 1,
+    );
+
+    if (hasDuplicates) {
+      setError("Please remove duplicate product links.");
+
+      return;
+    }
     try {
       dispatch({
         type: "SET_LOADING",
@@ -177,6 +186,16 @@ export default function Items() {
     );
   }
 
+  const duplicateUrls = links.reduce<Record<string, number>>((acc, item) => {
+    const url = item.url.trim();
+
+    if (!url) return acc;
+
+    acc[url] = (acc[url] || 0) + 1;
+
+    return acc;
+  }, {});
+
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-6 gap-4">
       {/* HEADER */}
@@ -200,53 +219,68 @@ export default function Items() {
       {/* SCROLLABLE LINKS */}
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="flex flex-col gap-4 pr-1">
-          {links.map((link, index) => (
-            <div
-              key={index}
-              className="border border-slate-200 rounded-xl p-3 flex flex-col gap-3"
-            >
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="https://www.example.com/..."
-                  value={link.url}
-                  onChange={(e) => handleChangeLink(index, e.target.value)}
-                  className="flex-1 border border-slate-300 rounded-lg px-4 py-2 outline-none focus:border-black"
-                />
+          {links.map((link, index) => {
+            const isDuplicate =
+              link.url.trim() !== "" && duplicateUrls[link.url.trim()] > 1;
 
-                {links.length > 1 && (
-                  <button
-                    onClick={() => handleRemoveLink(index)}
-                    className="px-4 rounded-lg border border-red-300 text-red-500"
-                  >
-                    <Trash />
-                  </button>
-                )}
-              </div>
+            return (
+              <div
+                key={index}
+                className="border border-slate-200 rounded-xl p-3 flex flex-col gap-3"
+              >
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="https://www.example.com/..."
+                    value={link.url}
+                    onChange={(e) => handleChangeLink(index, e.target.value)}
+                    className={`flex-1 rounded-lg px-4 py-2 outline-none
+  ${
+    isDuplicate
+      ? "border border-red-400 bg-red-50 focus:border-red-500"
+      : "border border-slate-300 focus:border-black"
+  }`}
+                  />
+                  {isDuplicate && (
+                    <p className="text-sm text-red-500">
+                      This product has already been added.
+                    </p>
+                  )}
 
-              <div className="flex items-center gap-3">
-                <p className="text-sm text-slate-500">Quantity</p>
+                  {links.length > 1 && (
+                    <button
+                      onClick={() => handleRemoveLink(index)}
+                      className="px-4 rounded-lg border border-red-300 text-red-500"
+                    >
+                      <Trash />
+                    </button>
+                  )}
+                </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleQuantity(index, "decrease")}
-                    className="w-8 h-8 border rounded-lg"
-                  >
-                    -
-                  </button>
+                <div className="flex items-center gap-3">
+                  <p className="text-sm text-slate-500">Quantity</p>
 
-                  <span className="w-6 text-center">{link.quantity}</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleQuantity(index, "decrease")}
+                      className="w-8 h-8 border rounded-lg"
+                    >
+                      -
+                    </button>
 
-                  <button
-                    onClick={() => handleQuantity(index, "increase")}
-                    className="w-8 h-8 border rounded-lg"
-                  >
-                    +
-                  </button>
+                    <span className="w-6 text-center">{link.quantity}</span>
+
+                    <button
+                      onClick={() => handleQuantity(index, "increase")}
+                      className="w-8 h-8 border rounded-lg"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       {/* ERROR */}
