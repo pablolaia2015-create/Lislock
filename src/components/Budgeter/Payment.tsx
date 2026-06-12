@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Banknote } from "lucide-react";
 
 export default function Payment() {
-  const [state, dispatch] = useContext(BudgeterContext);
+  const [, dispatch] = useContext(BudgeterContext);
 
   const handleContinue = () => {
     dispatch({
@@ -24,7 +24,6 @@ export default function Payment() {
     "revolut",
   );
 
-  const total = state.basketTotal.basketTotal;
 
   return (
     <div className="flex h-full min-h-0 flex-col px-3 py-3">
@@ -40,13 +39,6 @@ export default function Payment() {
       {/* CONTENT */}
       <div className="flex-1 min-h-0 overflow-y-auto py-4">
         <div className="flex flex-col gap-4">
-          {/* TOTAL */}
-          <section className="rounded-2xl border border-slate-200 p-5">
-            <p className="text-sm text-slate-500">Total amount</p>
-
-            <p className="mt-2 text-4xl font-bold">€{total.toFixed(2)}</p>
-          </section>
-
           <section className="rounded-2xl border border-slate-200 p-5">
             <h3 className="mb-4 font-semibold">Payment method</h3>
 

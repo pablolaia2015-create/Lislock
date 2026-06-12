@@ -84,7 +84,7 @@ export default function Basket() {
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col px-3 py-6">
+    <div className="flex h-full min-h-0 flex-col px-3">
       <div className="flex gap-3 items-center justify-between mb-3">
         <div>
           <h2 className="text-3xl font-semibold">Your basket</h2>
@@ -115,7 +115,7 @@ export default function Basket() {
             }
 
             return (
-              <div key={brand} className="flex flex-col gap-4">
+              <div key={brand} className="flex flex-col gap-2">
                 <div>
                   <p className="text-xs uppercase tracking-widest text-slate-400">
                     {brand}
@@ -131,10 +131,10 @@ export default function Basket() {
                     return (
                       <div
                         key={`${item.brand}-${item.model}`}
-                        className="border border-slate-200 rounded-2xl p-5 flex flex-col gap-4"
+                        className="border border-slate-200 rounded-2xl p-3 flex flex-col gap-2"
                       >
                         <div className="flex items-start justify-between gap-4">
-                          <div className="flex flex-col gap-1">
+                          <div className="flex flex-col ">
                             <h4 className="text-lg font-semibold">
                               {item.name}
                             </h4>

@@ -235,17 +235,12 @@ export default function Items() {
                     value={link.url}
                     onChange={(e) => handleChangeLink(index, e.target.value)}
                     className={`flex-1 rounded-lg px-4 py-2 outline-none
-  ${
-    isDuplicate
-      ? "border border-red-400 bg-red-50 focus:border-red-500"
-      : "border border-slate-300 focus:border-black"
-  }`}
+                               ${
+                                 isDuplicate
+                                   ? "border border-red-400 bg-red-50 focus:border-red-500"
+                                   : "border border-slate-300 focus:border-black"
+                               }`}
                   />
-                  {isDuplicate && (
-                    <p className="text-sm text-red-500">
-                      This product has already been added.
-                    </p>
-                  )}
 
                   {links.length > 1 && (
                     <button
@@ -254,6 +249,14 @@ export default function Items() {
                     >
                       <Trash />
                     </button>
+                  )}
+                </div>
+                <div>
+                  {isDuplicate && (
+                    <p className="text-sm text-red-500">
+                      This product has already been added. Please remove the
+                      duplicate before proceeding.
+                    </p>
                   )}
                 </div>
 
