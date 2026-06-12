@@ -1,0 +1,39 @@
+{
+  "bookings": [
+    {
+      "_id": "60f7a9b0c9b7f3001f3b0b1a",
+      "serviceDate": "2024-01-01",
+      "startTime": "10:00",
+      "durationMinutes": 120,
+      "status": "pending",
+      "name": "John Doe",
+      "phoneRaw": "+351912345678",
+      "address": "Rua Augusta 1",
+      "eircode": "1100-053",
+      "description": "Fixing a leaky pipe",
+      "service": "plumbing"
+    }
+  ],
+  "supplies": [
+    {
+      "_id": "60f7a9b0c9b7f3001f3b0b1b",
+      "name": "Pipe wrench",
+      "description": "Heavy duty pipe wrench",
+      "category": "tools",
+      "serviceSlug": "plumbing",
+      "photos": [],
+      "storeEntries": [],
+      "sellingPrice": 15,
+      "itemSlug": "pipe-wrench"
+    }
+  ],
+  "contacts": [
+    {
+      "_id": "60f7a9b0c9b7f3001f3b0b1c",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "message": "I need a quote for painting my house.",
+      "createdAt": "2026-06-12T22:21:18.069Z"
+    }
+  ]
+}
