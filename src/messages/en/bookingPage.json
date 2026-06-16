@@ -1,0 +1,47 @@
+{
+  "booking": {
+    "title": "Book a Service",
+    "selectedLabel": "Selected:",
+    "noneSelected": "— none —",
+    "chooseService": "Choose a service",
+    "changeService": "Change service"
+  },
+  "form": {
+    "sections": {
+      "details": "Your details",
+      "description": "Describe the issue",
+      "photos": "Add photos (optional)"
+    },
+    "fields": {
+      "name": "Full name",
+      "phone": "Phone",
+      "code": "353",
+      "address": "Address (Dublin)",
+      "eircode": "Eircode (e.g., D01 F5P2)"
+    },
+    "buttons": {
+      "takePhoto": "Take photo",
+      "choosePhotos": "Choose photos",
+      "submit": "Request booking",
+      "submitting": "Sending..."
+    }
+  },
+  "messages": {
+    "selectService": "Please choose a service first.",
+    "success": "Booking request sent! We'll confirm shortly.",
+    "errors": {
+      "generic": "Failed to submit booking.",
+      "missingId": "Booking ID not returned.",
+      "invalidFileType": "Only JPG, PNG, WEBP, HEIC/HEIF images are allowed.",
+      "fileTooLarge": "Each image must be 5MB or smaller."
+    }
+  },
+  "dayPicker": {
+    "locale": "en",
+    "preferedDate": "Preferred date",
+    "preferedTime": "Preferred time",
+    "selectedDate": "Select a date first",
+    "noAvailable": "No availability",
+    "selectTime": "Select a time"
+  }
+}

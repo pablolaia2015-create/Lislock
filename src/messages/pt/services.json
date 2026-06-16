@@ -1,0 +1,92 @@
+{
+  "seo": {
+    "title": "Serviços Marido de Aluguer em Lisboa – Lislock",
+    "description": "Serviços profissionais de marido de aluguer em Lisboa. Reparações de canalização, eletricidade, montagem de móveis e manutenção. Orçamentos rápidos!",
+    "applicationName": "LisLock",
+    "authors": [{ "name": "LisLock" }],
+    "creator": "LisLock",
+    "publisher": "LisLock",
+    "icons": {
+      "icon": "/lisLock.ico"
+    },
+    "manifest": "/site.webmanifest",
+    "robots": {
+      "index": true,
+      "follow": true,
+      "googleBot": {
+        "index": true,
+        "follow": true,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+        "max-snippet": -1
+      }
+    },
+    "openGraph": {
+      "title": "LisLock - Marido de Aluguer em Lisboa",
+      "description": "Reparações domésticas e manutenção profissional em toda a grande Lisboa. Contacte-nos hoje!",
+      "type": "website",
+      "locale": "pt_PT",
+      "url": "https://lislock.pt",
+      "siteName": "LisLock",
+      "images": [
+        {
+          "url": "images/ogImgLL.png",
+          "width": 1200,
+          "height": 630,
+          "alt": "LisLock - Serviços de Reparação em Lisboa"
+        }
+      ]
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Marido de Aluguer Lisboa | LisLock",
+      "description": "Reparações e manutenções domésticas em Lisboa.",
+      "images": ["images/ogImgLL.png"]
+    },
+    "category": "Home Services",
+    "classification": "Local Business",
+
+    "structuredData": {
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      "name": "LisLock",
+      "image": "https://lislock.pt/images/ogImgLL.png",
+      "@id": "https://lislock.pt",
+      "url": "https://lislock.pt",
+      "telephone": "+351933401695",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Atendimento ao domicílio",
+        "addressLocality": "Lisboa",
+        "postalCode": "1000-001",
+        "addressCountry": "PT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.7223,
+        "longitude": -9.1393
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "13:00"
+        }
+      ],
+      "areaServed": {
+        "@type": "City",
+        "name": "Lisboa"
+      }
+    }
+  },
+  "title": "Os Nossos Serviços",
+  "cta": "De reparações urgentes a melhorias domésticas, escolha o serviço que melhor se adapta a si"
+}

@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Marido de Aluguer em Lisboa | Reparações Rápidas - LisLock",
+    "description": "Serviços profissionais de marido de aluguer em Lisboa. Reparações de canalização, eletricidade, montagem de móveis e manutenção. Orçamentos rápidos!",
+    "applicationName": "LisLock",
+    "authors": [{ "name": "LisLock" }],
+    "creator": "LisLock",
+    "publisher": "LisLock",
+    "icons": {
+      "icon": "/lisLock.ico"
+    },
+    "manifest": "/site.webmanifest",
+    "robots": {
+      "index": true,
+      "follow": true,
+      "googleBot": {
+        "index": true,
+        "follow": true,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+        "max-snippet": -1
+      }
+    },
+    "openGraph": {
+      "title": "LisLock - Marido de Aluguer em Lisboa",
+      "description": "Reparações domésticas e manutenção profissional em toda a grande Lisboa. Contacte-nos hoje!",
+      "type": "website",
+      "locale": "pt_PT",
+      "url": "https://lislock.pt",
+      "siteName": "LisLock",
+      "images": [
+        {
+          "url": "images/ogImgLL.png",
+          "width": 1200,
+          "height": 630,
+          "alt": "LisLock - Serviços de Reparação em Lisboa"
+        }
+      ]
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Marido de Aluguer Lisboa | LisLock",
+      "description": "Reparações e manutenções domésticas em Lisboa.",
+      "images": ["images/ogImgLL.png"]
+    },
+    "category": "Home Services",
+    "classification": "Local Business",
+
+    "structuredData": {
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      "name": "LisLock",
+      "image": "https://lislock.pt/images/ogImgLL.png",
+      "@id": "https://lislock.pt",
+      "url": "https://lislock.pt",
+      "telephone": "+351933401695",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Atendimento ao domicílio",
+        "addressLocality": "Lisboa",
+        "postalCode": "1000-001",
+        "addressCountry": "PT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 38.7223,
+        "longitude": -9.1393
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "13:00"
+        }
+      ],
+      "areaServed": {
+        "@type": "City",
+        "name": "Lisboa"
+      }
+    }
+  },
+
+  "heroSection": {
+    "title": "Marido de Aluguer em Lisboa - Especialista em Reparações e Remodelações",
+    "subtitle": "De pequenos arranjos a reparações urgentes, eu posso ajudar. Escolha abaixo o serviço que melhor se adapta às suas necessidades e reserve uma data conveniente.",
+    "bookButton": "Agendar Reparação",
+    "callButton": {
+      "phone": "https://wa.me/351933401695?text=Ol%C3%A1%2C%20vi%20o%20vosso%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento.%20Podem%20ajudar-me%3F",
+      "children": "Entrar em contacto"
+    },
+    "ul": {
+      "li0": "✔ Deslocações no próprio dia (mediante disponibilidade)",
+      "li1": "✔ Preços fixos e transparentes",
+      "li2": "✔ Seguro de responsabilidade civil incluído"
+    }
+  },
+  "servicesGrid": {
+    "title": "Os Nossos Serviços"
+  },
+  "whyUs": {
+    "title": "Porquê escolher-nos?",
+    "points": [
+      {
+        "icon": "ShieldCheck",
+        "title": "Totalmente Segurado e Certificado",
+        "text": "Trabalhos realizados com segurança e cobertura de responsabilidade civil."
+      },
+      {
+        "icon": "Clock",
+        "title": "Resposta Rápida",
+        "text": "Deslocações no próprio dia em Lisboa, mediante disponibilidade."
+      },
+      {
+        "icon": "ThumbsUp",
+        "title": "Experiência Comprovada",
+        "text": "Mais de 10 anos de experiência em reparações e manutenção."
+      }
+    ]
+  }
+}

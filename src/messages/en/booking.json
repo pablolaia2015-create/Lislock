@@ -1,0 +1,91 @@
+{
+  "seo": {
+    "title": "Book a Repair | Dubliner Handyman",
+    "description": "Book a professional handyman service in Dublin — fast response, expert repairs.",
+    "applicationName": "Dubliner Handyman",
+    "authors": [{ "name": "Dubliner Handyman" }],
+    "creator": "Dubliner Handyman",
+    "publisher": "Dubliner Handyman",
+    "icons": {
+      "icon": "/favicon.ico"
+    },
+    "manifest": "/site.webmanifest",
+    "robots": {
+      "index": true,
+      "follow": true,
+      "googleBot": {
+        "index": true,
+        "follow": true,
+        "max-image-preview": "large",
+        "max-video-preview": -1,
+        "max-snippet": -1
+      }
+    },
+    "openGraph": {
+      "title": "Dubliner Handyman",
+      "description": "Reliable handyman services across Dublin. Book online.",
+      "type": "website",
+      "locale": "en_IE",
+      "url": "https://dublinerhandyman.ie",
+      "siteName": "Dubliner Handyman",
+      "images": [
+        {
+          "url": "images/ogImgDH.png",
+          "width": 1200,
+          "height": 630,
+          "alt": "Dubliner Handyman"
+        }
+      ]
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Dubliner Handyman",
+      "description": "Reliable handyman services across Dublin. Book online.",
+      "images": ["images/ogImgDH.png"]
+    },
+    "category": "Home Services",
+    "classification": "Local Business",
+
+    "structuredData": {
+      "@context": "https://schema.org",
+      "@type": "HomeAndConstructionBusiness",
+      "name": "Dubliner Handyman",
+      "image": "https://dublinerhandyman.ie/images/ogImgDH.png",
+      "@id": "https://dublinerhandyman.ie",
+      "url": "https://dublinerhandyman.ie",
+      "telephone": "+353894924563",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Home Service / Mobile",
+        "addressLocality": "Dublin",
+        "postalCode": "D01",
+        "addressCountry": "IE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 53.3498,
+        "longitude": -6.2603
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "13:00"
+        }
+      ],
+      "areaServed": {
+        "@type": "City",
+        "name": "Dublin"
+      }
+    }
+  },
+  "title": "This is a test"
+}
