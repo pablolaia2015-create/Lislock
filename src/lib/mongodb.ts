@@ -3,7 +3,6 @@ import { getLocale } from "./getLocale";
 
 // 🔒 Extend global (for dev hot-reload in Next.js)
 declare global {
-  // eslint-disable-next-line no-var
   var _mongo: {
     client: MongoClient | null;
     promise: Promise<MongoClient> | null;

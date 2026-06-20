@@ -74,10 +74,10 @@ export default async function CustomerBookingsPage({
     .collection("bookings")
     .find({
       $or: [
-        { phone: { $regex: new RegExp(safeRegex, "i") } },
-        { phoneE164: { $regex: new RegExp(safeRegex, "i") } },
-        { phone: { $regex: new RegExp(baseNumber, "i") } },
-        { phoneE164: { $regex: new RegExp(baseNumber, "i") } }
+        { phone: { $regex: new RegExp(safeRegex) } },
+        { phoneE164: { $regex: new RegExp(safeRegex) } },
+        { phone: { $regex: new RegExp(baseNumber) } },
+        { phoneE164: { $regex: new RegExp(baseNumber) } }
       ]
     })
     .sort({ createdAt: -1 })
