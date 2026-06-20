@@ -1,11 +1,12 @@
 // app/services/[slug]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SERVICES_EN, SERVICE_MAP_EN } from "@/lib/services_en";
+import { SERVICES_EN } from "@/lib/services_en";
 import { BudgeterProvider } from "@/context/budgeter";
 
-import { SERVICES_PT, SERVICE_MAP_PT } from "@/lib/services_pt";
+import { SERVICES_PT } from "@/lib/services_pt";
 import { getReviewsByService } from "@/lib/reviews";
+import { getServiceBySlugHybrid } from "@/lib/getServices";
 
 import type { Metadata } from "next";
 import { CalendarCheck, MessageCircle } from "lucide-react";
@@ -37,7 +38,7 @@ export async function generateMetadata({
   const locale = await getLocale();
   const isPT = locale === "pt";
 
-  const svc = isPT ? SERVICE_MAP_PT.get(slug) : SERVICE_MAP_EN.get(slug);
+  const svc = await getServiceBySlugHybrid(slug, isPT);
 
   if (!svc) {
     return {
@@ -105,7 +106,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const isPT = locale === "pt";
   const m = getMessages(locale).servicesSlug;
 
-  const svc = isPT ? SERVICE_MAP_PT.get(slug) : SERVICE_MAP_EN.get(slug);
+  const svc = await getServiceBySlugHybrid(slug, isPT);
   if (!svc) return notFound();
 
   const baseUrl = isPT ? "https://lislock.pt" : "https://dublinerhandyman.ie";
