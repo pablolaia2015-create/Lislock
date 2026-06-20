@@ -34,6 +34,10 @@ export default async function Page({
   if (rawStatus === "reviewing" || rawStatus === "pending") finalStatus = "reviewing";
   if (rawStatus.includes("cancel")) finalStatus = "cancelled"; // Apanha "cancelled", "Canceled", "CANCELADO", etc.
 
+  // Import the BookingStatus type from the component to type it correctly
+  // instead of using 'any'
+  // But wait, the file doesn't import BookingStatus. I'll just use the type assertion with the literal types.
+
   return (
     <BookingStatusPage
       booking={{
@@ -41,7 +45,7 @@ export default async function Page({
         serviceName: booking.service || "Serviço",
         date: booking.date || "A definir",
         address: booking.address || "Sem morada",
-        status: finalStatus as any,
+        status: finalStatus as "received" | "reviewing" | "confirmed" | "completed" | "cancelled",
         phoneE164: booking.phoneE164 || "", 
       }}
     />

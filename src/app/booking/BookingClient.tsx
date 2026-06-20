@@ -172,6 +172,18 @@ export default function BookingClient({ services, domain, m }: Props) {
     });
   }
 
+  // 💡 AUDITORIA: Prevenir memory leak quando o componente desmontar
+  const photosRef = useRef(photos);
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photosRef.current.forEach((p) => URL.revokeObjectURL(p.url));
+    };
+  }, []);
+
   /* --------------------------------- Submit ---------------------------------- */
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

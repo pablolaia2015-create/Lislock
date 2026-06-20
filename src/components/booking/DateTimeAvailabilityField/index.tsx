@@ -62,6 +62,11 @@ export default function DateTimeAvailabilityField({
       .then((d) => {
         setAvailable(d.availableDays.map((x: string) => new Date(x)));
         setBlocked(d.blockedDays.map((x: string) => new Date(x)));
+      })
+      .catch((e) => {
+        console.error("Failed to fetch calendar availability:", e);
+        setAvailable([]);
+        setBlocked([]);
       });
   }, [durationMinutes]);
 
@@ -80,15 +85,22 @@ export default function DateTimeAvailabilityField({
 
     fetch(`/api/availability?date=${date}&duration=${durationMinutes}`)
       .then((r) => r.json())
-      .then(setSlots);
+      .then(setSlots)
+      .catch((e) => {
+        console.error("Failed to fetch time slots:", e);
+        setSlots([]);
+      });
   }, [selected, durationMinutes, controlledTime]);
 
   const isoDate = selected ? selected.toISOString().slice(0, 10) : "";
   const locale = m.dayPicker.locale === "en" ? enIE : pt;
   const hasDate = !!selected;
 
-  // 💡 AUDITORIA: Capturar a data de hoje para bloquear o passado no calendário
-  const today = new Date();
+  // 💡 AUDITORIA: Capturar a data de hoje apenas no cliente para evitar hydration mismatch
+  const [today, setToday] = useState<Date | undefined>();
+  useEffect(() => {
+    setToday(new Date());
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -103,7 +115,7 @@ export default function DateTimeAvailabilityField({
           selected={selected}
           onSelect={handleDateChange}
           // 💡 AUDITORIA: Bloqueia dias anteriores a hoje JUNTO com os dias bloqueados pela API
-          disabled={[{ before: today }, ...blocked]}
+          disabled={today ? [{ before: today }, ...blocked] : blocked}
           modifiers={{
             available,
             blocked,
